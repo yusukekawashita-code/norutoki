@@ -729,3 +729,8 @@ MVPで最も重要なのは、
 そのため、まずRailsでNorutokiのコア機能を完成させることを優先し、新しい技術については「その技術がなければNorutokiの価値を検証できないか」を基準にMVPへ含めるかを判断します。
 
 技術的に難しい機能については、対象範囲を限定する、より簡単な方法へ変更する、本リリース以降へ移すなど、卒業制作として完成させることを優先して調整します。
+
+
+## 画面遷移図
+
+Figma：https://www.figma.com/design/tWHKsUZkCEy0TYr81BsWRi/Norutoki-%E7%94%BB%E9%9D%A2%E9%81%B7%E7%A7%BB%E5%9B%B3-MVP-?node-id=0-1&t=YI7kmSih5fiedfN7-1
