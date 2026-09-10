@@ -1,0 +1,27 @@
+# Bundler
+/.bundle
+
+# Logs and temporary files
+/log/*
+/tmp/*
+!/log/.keep
+!/tmp/.keep
+!/tmp/pids/
+!/tmp/pids/.keep
+
+# Storage
+/storage/*
+!/storage/.keep
+
+# Rails credentials
+/config/master.key
+
+# Environment variables
+.env
+.env.*
+
+# Assets
+/public/assets
+
+# macOS
+.DS_Store
