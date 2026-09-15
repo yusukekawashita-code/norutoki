@@ -32,20 +32,5 @@ test:
   password: password
 
 production:
-  primary: &primary_production
-    <<: *default
-    database: norutoki_production
-    username: norutoki
-    password: <%= ENV["NORUTOKI_DATABASE_PASSWORD"] %>
-  cache:
-    <<: *primary_production
-    database: norutoki_production_cache
-    migrations_paths: db/cache_migrate
-  queue:
-    <<: *primary_production
-    database: norutoki_production_queue
-    migrations_paths: db/queue_migrate
-  cable:
-    <<: *primary_production
-    database: norutoki_production_cable
-    migrations_paths: db/cable_migrate
+  <<: *default
+  url: <%= ENV["DATABASE_URL"] %>
