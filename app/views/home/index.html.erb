@@ -14,13 +14,22 @@
       </p>
 
       <div class="top-hero__actions">
-        <a href="#" class="top-hero__button">
-          はじめて使う方
-        </a>
+        <% if current_user %>
+          <p><%= current_user.name %>さん</p>
 
-        <a href="#" class="top-hero__login">
-          ログイン
-        </a>
+          <%= button_to "ログアウト",
+                        session_path,
+                        method: :delete,
+                        class: "top-hero__login" %>
+        <% else %>
+          <%= link_to "はじめて使う方",
+                      new_user_path,
+                      class: "top-hero__button" %>
+
+          <%= link_to "ログイン",
+                      new_session_path,
+                      class: "top-hero__login" %>
+        <% end %>
       </div>
     </div>
   </section>
