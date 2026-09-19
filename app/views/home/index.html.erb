@@ -13,15 +13,8 @@
         次に乗れる便をすぐに確認できるサービスです。
       </p>
 
-      <div class="top-hero__actions">
-        <% if current_user %>
-          <p><%= current_user.name %>さん</p>
-
-          <%= button_to "ログアウト",
-                        session_path,
-                        method: :delete,
-                        class: "top-hero__login" %>
-        <% else %>
+      <% unless current_user %>
+        <div class="top-hero__actions">
           <%= link_to "はじめて使う方",
                       new_user_path,
                       class: "top-hero__button" %>
@@ -29,8 +22,8 @@
           <%= link_to "ログイン",
                       new_session_path,
                       class: "top-hero__login" %>
-        <% end %>
-      </div>
+        </div>
+      <% end %>
     </div>
   </section>
 

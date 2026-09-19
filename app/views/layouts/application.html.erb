@@ -7,6 +7,33 @@
   </head>
 
   <body>
+    <header class="header">
+      <div class="header__inner">
+        <%= link_to "Norutoki", root_path, class: "header__logo" %>
+
+        <nav class="header__nav">
+          <% if current_user %>
+            <span class="header__user-name">
+              <%= current_user.name %>さん
+            </span>
+
+            <%= button_to "ログアウト",
+                          session_path,
+                          method: :delete,
+                          class: "header__logout" %>
+          <% else %>
+            <%= link_to "ユーザー登録",
+                        new_user_path,
+                        class: "header__link" %>
+
+            <%= link_to "ログイン",
+                        new_session_path,
+                        class: "header__login" %>
+          <% end %>
+        </nav>
+      </div>
+    </header>
+
     <%= yield %>
   </body>
 </html>
