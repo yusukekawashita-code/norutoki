@@ -20,6 +20,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_redirected_to root_path
+    assert_equal "ユーザー登録が完了しました", flash[:notice]
   end
 
   test "不正な入力ではユーザーを登録できない" do
