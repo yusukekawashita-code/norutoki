@@ -17,6 +17,7 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
 
     assert_redirected_to root_path
     assert_equal user.id, session[:user_id]
+    assert_equal "ログインしました", flash[:notice]
   end
 
   test "誤ったパスワードではログインできない" do
@@ -29,6 +30,7 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :unprocessable_entity
     assert_nil session[:user_id]
+    assert_equal "メールアドレスまたはパスワードが正しくありません", flash[:alert]
     assert_includes response.body, "メールアドレスまたはパスワードが正しくありません"
   end
 

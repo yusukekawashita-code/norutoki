@@ -14,6 +14,7 @@ body {
   color: #222;
   background: #fff;
 }
+
 /* ========================================
    Header
 ======================================== */
@@ -182,6 +183,7 @@ body {
     padding: 9px 12px;
     font-size: 13px;
   }
+
   .top-hero {
     padding: 64px 20px 56px;
   }
@@ -215,4 +217,26 @@ body {
   .top-about__description {
     font-size: 16px;
   }
+}
+
+/* ========================================
+   Flash Message
+======================================== */
+.flash-message {
+  width: 100%;
+  padding: 14px 24px;
+  box-sizing: border-box;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.flash-message--notice {
+  color: #166534;
+  background: #dcfce7;
+}
+
+.flash-message--alert {
+  color: #991b1b;
+  background: #fee2e2;
 }
