@@ -48,5 +48,6 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
 
     assert_redirected_to root_path
     assert_nil session[:user_id]
+    assert_equal "ログアウトしました", flash[:notice]
   end
 end
