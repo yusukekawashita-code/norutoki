@@ -1,3 +1,43 @@
-<h1>マイページ</h1>
+<main class="my-page">
+  <div class="my-page__inner">
+    <div class="my-page__header">
+      <p class="my-page__label">MY PAGE</p>
+      <h1 class="my-page__title">マイページ</h1>
+      <p class="my-page__welcome">
+        <%= current_user.name %>さん、こんにちは！
+      </p>
+    </div>
 
-<p><%= current_user.name %>さん、こんにちは！</p>
+    <section class="my-page__section">
+      <h2 class="my-page__section-title">ユーザー情報</h2>
+
+      <div class="my-page__user-card">
+        <dl class="my-page__user-list">
+          <div class="my-page__user-item">
+            <dt>お名前</dt>
+            <dd><%= current_user.name %></dd>
+          </div>
+
+          <div class="my-page__user-item">
+            <dt>メールアドレス</dt>
+            <dd><%= current_user.email %></dd>
+          </div>
+        </dl>
+      </div>
+    </section>
+
+    <section class="my-page__section">
+      <h2 class="my-page__section-title">いつもの移動</h2>
+
+      <div class="my-page__empty">
+        <p class="my-page__empty-title">
+          いつもの移動はまだ登録されていません
+        </p>
+
+        <p class="my-page__empty-text">
+          登録した移動がここに表示されます。
+        </p>
+      </div>
+    </section>
+  </div>
+</main>
