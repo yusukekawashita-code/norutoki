@@ -240,3 +240,143 @@ body {
   color: #991b1b;
   background: #fee2e2;
 }
+
+/* ========================================
+   My Page
+======================================== */
+.my-page {
+  padding: 72px 24px 96px;
+  background: #f7f8fa;
+}
+
+.my-page__inner {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.my-page__header {
+  margin-bottom: 56px;
+}
+
+.my-page__label {
+  margin: 0 0 12px;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.my-page__title {
+  margin: 0;
+  font-size: 40px;
+  line-height: 1.3;
+}
+
+.my-page__welcome {
+  margin: 20px 0 0;
+  font-size: 17px;
+  line-height: 1.8;
+}
+
+.my-page__section+.my-page__section {
+  margin-top: 48px;
+}
+
+.my-page__section-title {
+  margin: 0 0 20px;
+  font-size: 24px;
+}
+
+.my-page__user-card,
+.my-page__empty {
+  padding: 32px;
+  border: 1px solid #e5e5e5;
+  border-radius: 12px;
+  background: #fff;
+  box-sizing: border-box;
+}
+
+.my-page__user-list {
+  margin: 0;
+}
+
+.my-page__user-item {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: 24px;
+  padding: 20px 0;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.my-page__user-item:first-child {
+  padding-top: 0;
+}
+
+.my-page__user-item:last-child {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.my-page__user-item dt {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.my-page__user-item dd {
+  margin: 0;
+  font-size: 16px;
+  overflow-wrap: anywhere;
+}
+
+.my-page__empty {
+  text-align: center;
+}
+
+.my-page__empty-title {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.my-page__empty-text {
+  margin: 12px 0 0;
+  color: #666;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+@media (max-width: 767px) {
+  .my-page {
+    padding: 48px 20px 64px;
+  }
+
+  .my-page__header {
+    margin-bottom: 40px;
+  }
+
+  .my-page__title {
+    font-size: 32px;
+  }
+
+  .my-page__welcome {
+    font-size: 16px;
+  }
+
+  .my-page__section+.my-page__section {
+    margin-top: 40px;
+  }
+
+  .my-page__section-title {
+    font-size: 22px;
+  }
+
+  .my-page__user-card,
+  .my-page__empty {
+    padding: 24px 20px;
+  }
+
+  .my-page__user-item {
+    grid-template-columns: 1fr;
+    gap: 8px;
+    padding: 18px 0;
+  }
+}
