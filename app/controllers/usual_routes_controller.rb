@@ -1,6 +1,10 @@
 class UsualRoutesController < ApplicationController
   before_action :require_login
 
+  def index
+    @usual_routes = current_user.usual_routes
+  end
+
   def new
     @usual_route = current_user.usual_routes.build
   end

@@ -5,7 +5,7 @@ Rails.application.routes.draw do
 
   resource :session, only: %i[new create destroy]
 
-  resources :usual_routes, only: %i[new create]
+  resources :usual_routes, only: %i[index new create]
 
   get "my_page", to: "my_page#show"
 end
