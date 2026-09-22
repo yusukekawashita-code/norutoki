@@ -1,0 +1,32 @@
+<h1>いつもの移動を登録</h1>
+
+<% if @usual_route.errors.any? %>
+  <div>
+    <ul>
+      <% @usual_route.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<%= form_with model: @usual_route do |form| %>
+  <div>
+    <%= form.label :name, "ルート名" %>
+    <%= form.text_field :name, required: true %>
+  </div>
+
+  <div>
+    <%= form.label :boarding_place, "出発地" %>
+    <%= form.text_field :boarding_place, required: true %>
+  </div>
+
+  <div>
+    <%= form.label :destination_place, "目的地" %>
+    <%= form.text_field :destination_place, required: true %>
+  </div>
+
+  <div>
+    <%= form.submit "登録する" %>
+  </div>
+<% end %>
