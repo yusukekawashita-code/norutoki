@@ -1,0 +1,35 @@
+<main class="usual-routes">
+  <div class="usual-routes__inner">
+    <div class="usual-routes__header">
+      <div>
+        <p class="usual-routes__label">USUAL ROUTES</p>
+        <h1 class="usual-routes__title">いつもの移動</h1>
+      </div>
+
+      <%= link_to "新しいルートを登録", new_usual_route_path, class: "usual-routes__new-link" %>
+    </div>
+
+    <% if @usual_routes.any? %>
+      <div class="usual-routes__list">
+        <% @usual_routes.each do |usual_route| %>
+          <div class="usual-routes__card">
+            <h2 class="usual-routes__name">
+              <%= usual_route.name %>
+            </h2>
+
+            <div class="usual-routes__places">
+              <span><%= usual_route.boarding_place %></span>
+              <span class="usual-routes__arrow">→</span>
+              <span><%= usual_route.destination_place %></span>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="usual-routes__empty">
+        <p>いつもの移動はまだ登録されていません</p>
+        <%= link_to "最初のルートを登録する", new_usual_route_path %>
+      </div>
+    <% end %>
+  </div>
+</main>
