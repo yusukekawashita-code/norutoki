@@ -10,9 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_23_155447) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_23_162035) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "departures", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.time "departure_time", null: false
+    t.string "note"
+    t.bigint "timetable_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["timetable_id"], name: "index_departures_on_timetable_id"
+  end
 
   create_table "timetables", force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -41,6 +50,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_23_155447) do
     t.index ["user_id"], name: "index_usual_routes_on_user_id"
   end
 
+  add_foreign_key "departures", "timetables"
   add_foreign_key "timetables", "usual_routes"
   add_foreign_key "usual_routes", "users"
 end

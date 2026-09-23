@@ -1,0 +1,64 @@
+<main class="timetable-new">
+  <div class="timetable-new__inner">
+    <h1 class="timetable-new__title">時刻表を登録</h1>
+
+    <div class="timetable-new__route">
+      <p class="timetable-new__route-name"><%= @usual_route.name %></p>
+      <p class="timetable-new__route-path">
+        <%= @usual_route.boarding_place %>
+        →
+        <%= @usual_route.destination_place %>
+      </p>
+    </div>
+
+    <%= form_with model: [@usual_route, @timetable], class: "timetable-form" do |form| %>
+      <% if @timetable.errors.any? %>
+        <div class="timetable-form__errors">
+          <p>入力内容を確認してください。</p>
+
+          <ul>
+            <% @timetable.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <div class="timetable-form__field">
+        <%= form.label :day_type, "曜日区分", class: "timetable-form__label" %>
+        <%= form.select :day_type,
+                        [["平日", 0], ["土日祝", 1]],
+                        { prompt: "選択してください" },
+                        class: "timetable-form__select" %>
+      </div>
+
+      <div class="timetable-form__departures">
+        <p class="timetable-form__label">出発時刻</p>
+
+        <%= form.fields_for :departures do |departure_form| %>
+          <div class="timetable-form__departure">
+            <div class="timetable-form__field">
+              <%= departure_form.label :departure_time, "出発時刻", class: "timetable-form__sub-label" %>
+              <%= departure_form.time_field :departure_time, class: "timetable-form__time" %>
+            </div>
+
+            <div class="timetable-form__field">
+              <%= departure_form.label :note, "メモ", class: "timetable-form__sub-label" %>
+              <%= departure_form.text_field :note,
+                                            placeholder: "例：快速",
+                                            class: "timetable-form__input" %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+
+      <div class="timetable-form__actions">
+        <%= form.submit "登録する", class: "timetable-form__submit" %>
+
+        <%= link_to "ルート詳細へ戻る",
+                    usual_route_path(@usual_route),
+                    class: "timetable-form__back" %>
+      </div>
+    <% end %>
+  </div>
+</main>

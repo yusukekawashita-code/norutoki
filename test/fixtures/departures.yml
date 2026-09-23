@@ -1,0 +1,9 @@
+one:
+  timetable: one
+  departure_time: "08:10"
+  note: 快速
+
+two:
+  timetable: two
+  departure_time: "09:00"
+  note: 普通
