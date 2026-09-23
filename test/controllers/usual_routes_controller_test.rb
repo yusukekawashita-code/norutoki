@@ -97,4 +97,43 @@ class UsualRoutesControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to new_session_path
     assert_equal "ログインしてください", flash[:alert]
   end
+
+  test "ログイン中のユーザーは自分のルート詳細を表示できる" do
+    user = users(:one)
+    usual_route = usual_routes(:one)
+
+    post session_path, params: {
+      email: user.email,
+      password: "password"
+    }
+
+    get usual_route_path(usual_route)
+
+    assert_response :success
+    assert_match usual_route.name, response.body
+    assert_match usual_route.boarding_place, response.body
+    assert_match usual_route.destination_place, response.body
+    assert_select "a[href='#{usual_routes_path}']", text: "ルート一覧へ戻る"
+  end
+
+  test "他のユーザーが登録したルート詳細にはアクセスできない" do
+    user = users(:one)
+    other_user_route = usual_routes(:two)
+
+    post session_path, params: {
+      email: user.email,
+      password: "password"
+    }
+
+    get usual_route_path(other_user_route)
+
+    assert_response :not_found
+  end
+
+  test "未ログインユーザーはルート詳細画面にアクセスできない" do
+    get usual_route_path(usual_routes(:one))
+
+    assert_redirected_to new_session_path
+    assert_equal "ログインしてください", flash[:alert]
+  end
 end

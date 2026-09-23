@@ -14,7 +14,7 @@
         <% @usual_routes.each do |usual_route| %>
           <div class="usual-routes__card">
             <h2 class="usual-routes__name">
-              <%= usual_route.name %>
+              <%= link_to usual_route.name, usual_route_path(usual_route), class: "usual-routes__name-link" %>
             </h2>
 
             <div class="usual-routes__places">

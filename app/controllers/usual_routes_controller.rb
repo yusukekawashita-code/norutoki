@@ -5,6 +5,10 @@ class UsualRoutesController < ApplicationController
     @usual_routes = current_user.usual_routes
   end
 
+  def show
+    @usual_route = current_user.usual_routes.find(params[:id])
+  end
+
   def new
     @usual_route = current_user.usual_routes.build
   end
