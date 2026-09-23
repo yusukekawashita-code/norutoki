@@ -1,0 +1,40 @@
+<main class="usual-route-edit">
+  <div class="usual-route-edit__inner">
+    <div class="usual-route-edit__header">
+      <p class="usual-route-edit__label">EDIT ROUTE</p>
+      <h1 class="usual-route-edit__title">ルートを編集</h1>
+    </div>
+
+    <% if @usual_route.errors.any? %>
+      <div class="usual-route-edit__errors">
+        <ul>
+          <% @usual_route.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <%= form_with model: @usual_route, class: "usual-route-edit__form" do |form| %>
+      <div class="usual-route-edit__field">
+        <%= form.label :name, "ルート名", class: "usual-route-edit__field-label" %>
+        <%= form.text_field :name, class: "usual-route-edit__input" %>
+      </div>
+
+      <div class="usual-route-edit__field">
+        <%= form.label :boarding_place, "出発地", class: "usual-route-edit__field-label" %>
+        <%= form.text_field :boarding_place, class: "usual-route-edit__input" %>
+      </div>
+
+      <div class="usual-route-edit__field">
+        <%= form.label :destination_place, "目的地", class: "usual-route-edit__field-label" %>
+        <%= form.text_field :destination_place, class: "usual-route-edit__input" %>
+      </div>
+
+      <div class="usual-route-edit__actions">
+        <%= form.submit "更新する", class: "usual-route-edit__submit" %>
+        <%= link_to "キャンセル", usual_route_path(@usual_route), class: "usual-route-edit__cancel" %>
+      </div>
+    <% end %>
+  </div>
+</main>
