@@ -31,6 +31,7 @@
     </div>
 
     <div class="usual-route-detail__actions">
+      <%= link_to "編集する", edit_usual_route_path(@usual_route), class: "usual-route-detail__edit-link" %>
       <%= link_to "ルート一覧へ戻る", usual_routes_path, class: "usual-route-detail__back-link" %>
     </div>
   </div>

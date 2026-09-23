@@ -1,12 +1,23 @@
 class UsualRoutesController < ApplicationController
   before_action :require_login
+  before_action :set_usual_route, only: %i[show edit update]
 
   def index
     @usual_routes = current_user.usual_routes
   end
 
   def show
-    @usual_route = current_user.usual_routes.find(params[:id])
+  end
+
+  def edit
+  end
+
+  def update
+    if @usual_route.update(usual_route_params)
+      redirect_to usual_route_path(@usual_route), notice: "いつもの移動を更新しました"
+    else
+      render :edit, status: :unprocessable_entity
+    end
   end
 
   def new
@@ -24,6 +35,10 @@ class UsualRoutesController < ApplicationController
   end
 
   private
+
+  def set_usual_route
+    @usual_route = current_user.usual_routes.find(params[:id])
+  end
 
   def usual_route_params
     params.expect(usual_route: %i[name boarding_place destination_place])

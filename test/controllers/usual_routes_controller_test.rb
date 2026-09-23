@@ -136,4 +136,137 @@ class UsualRoutesControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to new_session_path
     assert_equal "ログインしてください", flash[:alert]
   end
+
+  test "ログイン中のユーザーは自分のルート編集画面を表示できる" do
+    user = users(:one)
+    usual_route = usual_routes(:one)
+
+    post session_path, params: {
+      email: user.email,
+      password: "password"
+    }
+
+    get edit_usual_route_path(usual_route)
+
+    assert_response :success
+    assert_select "input[name='usual_route[name]'][value='#{usual_route.name}']"
+    assert_select "input[name='usual_route[boarding_place]'][value='#{usual_route.boarding_place}']"
+    assert_select "input[name='usual_route[destination_place]'][value='#{usual_route.destination_place}']"
+  end
+
+  test "ログイン中のユーザーは自分のルートを更新できる" do
+    user = users(:one)
+    usual_route = usual_routes(:one)
+
+    post session_path, params: {
+      email: user.email,
+      password: "password"
+    }
+
+    patch usual_route_path(usual_route), params: {
+      usual_route: {
+        name: "更新後のルート",
+        boarding_place: "更新後の出発地",
+        destination_place: "更新後の目的地"
+      }
+    }
+
+    usual_route.reload
+
+    assert_equal "更新後のルート", usual_route.name
+    assert_equal "更新後の出発地", usual_route.boarding_place
+    assert_equal "更新後の目的地", usual_route.destination_place
+    assert_redirected_to usual_route_path(usual_route)
+    assert_equal "いつもの移動を更新しました", flash[:notice]
+  end
+
+  test "入力内容が不正な場合はルートを更新できない" do
+    user = users(:one)
+    usual_route = usual_routes(:one)
+    original_name = usual_route.name
+
+    post session_path, params: {
+      email: user.email,
+      password: "password"
+    }
+
+    patch usual_route_path(usual_route), params: {
+      usual_route: {
+        name: "",
+        boarding_place: "",
+        destination_place: ""
+      }
+    }
+
+    usual_route.reload
+
+    assert_response :unprocessable_entity
+    assert_equal original_name, usual_route.name
+    assert_select "li", text: "Name can't be blank"
+    assert_select "li", text: "Boarding place can't be blank"
+    assert_select "li", text: "Destination place can't be blank"
+  end
+
+  test "他のユーザーが登録したルートの編集画面にはアクセスできない" do
+    user = users(:one)
+    other_user_route = usual_routes(:two)
+
+    post session_path, params: {
+      email: user.email,
+      password: "password"
+    }
+
+    get edit_usual_route_path(other_user_route)
+
+    assert_response :not_found
+  end
+
+  test "他のユーザーが登録したルートは更新できない" do
+    user = users(:one)
+    other_user_route = usual_routes(:two)
+    original_name = other_user_route.name
+
+    post session_path, params: {
+      email: user.email,
+      password: "password"
+    }
+
+    patch usual_route_path(other_user_route), params: {
+      usual_route: {
+        name: "不正に更新",
+        boarding_place: "不正な出発地",
+        destination_place: "不正な目的地"
+      }
+    }
+
+    other_user_route.reload
+
+    assert_response :not_found
+    assert_equal original_name, other_user_route.name
+  end
+
+  test "未ログインユーザーはルート編集画面にアクセスできない" do
+    get edit_usual_route_path(usual_routes(:one))
+
+    assert_redirected_to new_session_path
+    assert_equal "ログインしてください", flash[:alert]
+  end
+
+  test "未ログインユーザーはルートを更新できない" do
+    usual_route = usual_routes(:one)
+    original_name = usual_route.name
+
+    patch usual_route_path(usual_route), params: {
+      usual_route: {
+        name: "不正に更新",
+        boarding_place: "不正な出発地",
+        destination_place: "不正な目的地"
+      }
+    }
+
+    usual_route.reload
+
+    assert_redirected_to new_session_path
+    assert_equal original_name, usual_route.name
+  end
 end
