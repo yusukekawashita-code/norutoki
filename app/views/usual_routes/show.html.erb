@@ -1,0 +1,37 @@
+<main class="usual-route-detail">
+  <div class="usual-route-detail__inner">
+    <div class="usual-route-detail__header">
+      <div>
+        <p class="usual-route-detail__label">ROUTE DETAIL</p>
+        <h1 class="usual-route-detail__title">ルート詳細</h1>
+      </div>
+    </div>
+
+    <div class="usual-route-detail__card">
+      <div class="usual-route-detail__item">
+        <p class="usual-route-detail__item-label">ルート名</p>
+        <p class="usual-route-detail__item-value">
+          <%= @usual_route.name %>
+        </p>
+      </div>
+
+      <div class="usual-route-detail__item">
+        <p class="usual-route-detail__item-label">出発地</p>
+        <p class="usual-route-detail__item-value">
+          <%= @usual_route.boarding_place %>
+        </p>
+      </div>
+
+      <div class="usual-route-detail__item">
+        <p class="usual-route-detail__item-label">目的地</p>
+        <p class="usual-route-detail__item-value">
+          <%= @usual_route.destination_place %>
+        </p>
+      </div>
+    </div>
+
+    <div class="usual-route-detail__actions">
+      <%= link_to "ルート一覧へ戻る", usual_routes_path, class: "usual-route-detail__back-link" %>
+    </div>
+  </div>
+</main>
