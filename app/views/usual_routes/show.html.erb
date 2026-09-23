@@ -31,7 +31,13 @@
     </div>
 
     <div class="usual-route-detail__actions">
-      <%= link_to "編集する", edit_usual_route_path(@usual_route), class: "usual-route-detail__edit-link" %>
+      <%= link_to "時刻表を登録する",
+                  new_usual_route_timetable_path(@usual_route),
+                  class: "usual-route-detail__timetable-link" %>
+
+      <%= link_to "編集する",
+                  edit_usual_route_path(@usual_route),
+                  class: "usual-route-detail__edit-link" %>
 
       <%= button_to "削除する",
                     usual_route_path(@usual_route),
@@ -39,7 +45,9 @@
                     form: { data: { turbo_confirm: "このルートを削除しますか？" } },
                     class: "usual-route-detail__delete-button" %>
 
-      <%= link_to "ルート一覧へ戻る", usual_routes_path, class: "usual-route-detail__back-link" %>
+      <%= link_to "ルート一覧へ戻る",
+                  usual_routes_path,
+                  class: "usual-route-detail__back-link" %>
     </div>
   </div>
 </main>
