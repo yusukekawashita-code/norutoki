@@ -32,6 +32,13 @@
 
     <div class="usual-route-detail__actions">
       <%= link_to "編集する", edit_usual_route_path(@usual_route), class: "usual-route-detail__edit-link" %>
+
+      <%= button_to "削除する",
+                    usual_route_path(@usual_route),
+                    method: :delete,
+                    form: { data: { turbo_confirm: "このルートを削除しますか？" } },
+                    class: "usual-route-detail__delete-button" %>
+
       <%= link_to "ルート一覧へ戻る", usual_routes_path, class: "usual-route-detail__back-link" %>
     </div>
   </div>

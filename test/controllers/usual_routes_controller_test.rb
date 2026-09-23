@@ -269,4 +269,68 @@ class UsualRoutesControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to new_session_path
     assert_equal original_name, usual_route.name
   end
+
+  test "ログイン中のユーザーは自分のルートを削除できる" do
+    user = users(:one)
+    usual_route = usual_routes(:one)
+
+    post session_path, params: {
+      email: user.email,
+      password: "password"
+    }
+
+    assert_difference "UsualRoute.count", -1 do
+      delete usual_route_path(usual_route)
+    end
+
+    assert_redirected_to usual_routes_path
+    assert_equal "いつもの移動を削除しました", flash[:notice]
+    assert_not UsualRoute.exists?(usual_route.id)
+  end
+
+  test "他のユーザーが登録したルートは削除できない" do
+    user = users(:one)
+    other_user_route = usual_routes(:two)
+
+    post session_path, params: {
+      email: user.email,
+      password: "password"
+    }
+
+    assert_no_difference "UsualRoute.count" do
+      delete usual_route_path(other_user_route)
+    end
+
+    assert_response :not_found
+    assert UsualRoute.exists?(other_user_route.id)
+  end
+
+  test "未ログインユーザーはルートを削除できない" do
+    usual_route = usual_routes(:one)
+
+    assert_no_difference "UsualRoute.count" do
+      delete usual_route_path(usual_route)
+    end
+
+    assert_redirected_to new_session_path
+    assert_equal "ログインしてください", flash[:alert]
+    assert UsualRoute.exists?(usual_route.id)
+  end
+
+  test "ルート詳細画面に削除ボタンが表示される" do
+    user = users(:one)
+    usual_route = usual_routes(:one)
+
+    post session_path, params: {
+      email: user.email,
+      password: "password"
+    }
+
+    get usual_route_path(usual_route)
+
+    assert_response :success
+    assert_select "form[action='#{usual_route_path(usual_route)}'][method='post']" do
+      assert_select "button", text: "削除する"
+    end
+  end
 end

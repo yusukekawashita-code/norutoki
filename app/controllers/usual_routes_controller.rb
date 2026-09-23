@@ -1,6 +1,6 @@
 class UsualRoutesController < ApplicationController
   before_action :require_login
-  before_action :set_usual_route, only: %i[show edit update]
+  before_action :set_usual_route, only: %i[show edit update destroy]
 
   def index
     @usual_routes = current_user.usual_routes
@@ -18,6 +18,12 @@ class UsualRoutesController < ApplicationController
     else
       render :edit, status: :unprocessable_entity
     end
+  end
+
+  def destroy
+    @usual_route.destroy
+
+    redirect_to usual_routes_path, notice: "いつもの移動を削除しました"
   end
 
   def new
