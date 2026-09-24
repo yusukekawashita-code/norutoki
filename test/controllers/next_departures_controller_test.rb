@@ -46,7 +46,35 @@ class NextDeparturesControllerTest < ActionDispatch::IntegrationTest
 
       assert_response :success
       assert_select ".next-departures__time", text: "08:10"
+      assert_select ".next-departures__countdown", text: "あと10分"
       assert_select ".next-departures__note", text: "快速"
+    end
+  end
+
+  test "時間の経過後に再読み込みすると残り時間が更新される" do
+    timetable = timetables(:one)
+    timetable.update!(day_type: 0)
+    timetable.departures.destroy_all
+
+    timetable.departures.create!(
+      departure_time: "08:10",
+      note: "快速"
+    )
+
+    login
+
+    travel_to Time.zone.local(2026, 9, 25, 8, 0, 0) do
+      get next_departures_path
+
+      assert_response :success
+      assert_select ".next-departures__countdown", text: "あと10分"
+    end
+
+    travel_to Time.zone.local(2026, 9, 25, 8, 5, 0) do
+      get next_departures_path
+
+      assert_response :success
+      assert_select ".next-departures__countdown", text: "あと5分"
     end
   end
 
@@ -67,6 +95,7 @@ class NextDeparturesControllerTest < ActionDispatch::IntegrationTest
 
       assert_response :success
       assert_select ".next-departures__status", text: "本日の便は終了しました"
+      assert_select ".next-departures__countdown", count: 0
     end
   end
 
@@ -81,6 +110,7 @@ class NextDeparturesControllerTest < ActionDispatch::IntegrationTest
       assert_response :success
       assert_select ".next-departures__status",
                     text: "時刻表が登録されていません"
+      assert_select ".next-departures__countdown", count: 0
     end
   end
 
