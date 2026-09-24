@@ -9,6 +9,7 @@ Rails.application.routes.draw do
     member do
       patch :move_up
       patch :move_down
+      patch :toggle_favorite
     end
 
     resources :timetables, only: %i[index new create edit update]

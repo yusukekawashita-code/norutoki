@@ -1,6 +1,6 @@
 class UsualRoutesController < ApplicationController
   before_action :require_login
-  before_action :set_usual_route, only: %i[show edit update destroy move_up move_down]
+  before_action :set_usual_route, only: %i[show edit update destroy move_up move_down toggle_favorite]
 
   def index
     @usual_routes = current_user.usual_routes.ordered
@@ -58,6 +58,12 @@ class UsualRoutesController < ApplicationController
         next_route.update!(position: current_position)
       end
     end
+
+    redirect_to usual_routes_path
+  end
+
+  def toggle_favorite
+    @usual_route.update!(favorite: !@usual_route.favorite?)
 
     redirect_to usual_routes_path
   end

@@ -441,4 +441,59 @@ class UsualRoutesControllerTest < ActionDispatch::IntegrationTest
     assert_response :not_found
     assert_equal original_position, other_user_route.position
   end
+
+  test "ログイン中のユーザーは自分のルートをお気に入りに設定できる" do
+    user = users(:one)
+    usual_route = usual_routes(:one)
+
+    assert_not usual_route.favorite?
+
+    post session_path, params: {
+      email: user.email,
+      password: "password"
+    }
+
+    patch toggle_favorite_usual_route_path(usual_route)
+
+    usual_route.reload
+
+    assert usual_route.favorite?
+    assert_redirected_to usual_routes_path
+  end
+
+  test "ログイン中のユーザーはお気に入りを解除できる" do
+    user = users(:one)
+    usual_route = usual_routes(:one)
+    usual_route.update!(favorite: true)
+
+    post session_path, params: {
+      email: user.email,
+      password: "password"
+    }
+
+    patch toggle_favorite_usual_route_path(usual_route)
+
+    usual_route.reload
+
+    assert_not usual_route.favorite?
+    assert_redirected_to usual_routes_path
+  end
+
+  test "他のユーザーが登録したルートはお気に入り変更できない" do
+    user = users(:one)
+    other_user_route = usual_routes(:two)
+    original_favorite = other_user_route.favorite
+
+    post session_path, params: {
+      email: user.email,
+      password: "password"
+    }
+
+    patch toggle_favorite_usual_route_path(other_user_route)
+
+    other_user_route.reload
+
+    assert_response :not_found
+    assert_equal original_favorite, other_user_route.favorite
+  end
 end
