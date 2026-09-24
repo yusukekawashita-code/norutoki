@@ -14,6 +14,7 @@
           <% usual_route = route_departure[:usual_route] %>
           <% timetable = route_departure[:timetable] %>
           <% next_departure = route_departure[:next_departure] %>
+          <% minutes_until_departure = route_departure[:minutes_until_departure] %>
 
           <article class="next-departures__card">
             <div class="next-departures__route">
@@ -54,6 +55,10 @@
 
                 <p class="next-departures__time">
                   <%= next_departure.departure_time.strftime("%H:%M") %>
+                </p>
+                
+                <p class="next-departures__countdown">
+                  あと<%= minutes_until_departure %>分
                 </p>
 
                 <% if next_departure.note.present? %>
