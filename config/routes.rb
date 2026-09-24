@@ -10,4 +10,5 @@ Rails.application.routes.draw do
   end
 
   get "my_page", to: "my_page#show"
+  get "next_departures", to: "next_departures#index"
 end

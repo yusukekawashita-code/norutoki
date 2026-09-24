@@ -1,0 +1,95 @@
+<main class="next-departures">
+  <div class="next-departures__inner">
+    <div class="next-departures__header">
+      <p class="next-departures__label">NEXT BUS</p>
+      <h1 class="next-departures__title">次の便</h1>
+      <p class="next-departures__description">
+        現在時刻から次に利用できる便を確認できます。
+      </p>
+    </div>
+
+    <% if @route_departures.any? %>
+      <div class="next-departures__list">
+        <% @route_departures.each do |route_departure| %>
+          <% usual_route = route_departure[:usual_route] %>
+          <% timetable = route_departure[:timetable] %>
+          <% next_departure = route_departure[:next_departure] %>
+
+          <article class="next-departures__card">
+            <div class="next-departures__route">
+              <h2 class="next-departures__route-name">
+                <%= usual_route.name %>
+              </h2>
+
+              <p class="next-departures__route-path">
+                <%= usual_route.boarding_place %>
+                <span>→</span>
+                <%= usual_route.destination_place %>
+              </p>
+            </div>
+
+            <div class="next-departures__result">
+              <% if timetable.nil? %>
+                <p class="next-departures__status">
+                  時刻表が登録されていません
+                </p>
+
+                <%= link_to "時刻表を登録する",
+                            new_usual_route_timetable_path(usual_route),
+                            class: "next-departures__link" %>
+
+              <% elsif next_departure.nil? %>
+                <p class="next-departures__status">
+                  本日の便は終了しました
+                </p>
+
+                <%= link_to "時刻表を確認する",
+                            usual_route_timetables_path(usual_route),
+                            class: "next-departures__link" %>
+
+              <% else %>
+                <p class="next-departures__next-label">
+                  次の出発
+                </p>
+
+                <p class="next-departures__time">
+                  <%= next_departure.departure_time.strftime("%H:%M") %>
+                </p>
+
+                <% if next_departure.note.present? %>
+                  <p class="next-departures__note">
+                    <%= next_departure.note %>
+                  </p>
+                <% end %>
+
+                <%= link_to "時刻表を確認する",
+                            usual_route_timetables_path(usual_route),
+                            class: "next-departures__link" %>
+              <% end %>
+            </div>
+          </article>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="next-departures__empty">
+        <p class="next-departures__empty-title">
+          いつもの移動がまだ登録されていません
+        </p>
+
+        <p class="next-departures__empty-text">
+          まずは普段利用するルートを登録してください。
+        </p>
+
+        <%= link_to "ルートを登録する",
+                    new_usual_route_path,
+                    class: "next-departures__empty-link" %>
+      </div>
+    <% end %>
+
+    <div class="next-departures__actions">
+      <%= link_to "マイページへ戻る",
+                  my_page_path,
+                  class: "next-departures__back-link" %>
+    </div>
+  </div>
+</main>
