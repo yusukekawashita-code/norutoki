@@ -437,11 +437,45 @@ body {
 }
 
 .usual-routes__card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
   padding: 28px 32px;
   border: 1px solid #e5e5e5;
   border-radius: 12px;
   background: #fff;
   box-sizing: border-box;
+}
+
+.usual-routes__card-content {
+  min-width: 0;
+}
+
+.usual-routes__order {
+  display: flex;
+  flex-shrink: 0;
+  gap: 8px;
+}
+
+.usual-routes__order-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: #fff;
+  color: #111;
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.usual-routes__order-button:hover {
+  background: #f1f3f5;
 }
 
 .usual-routes__name {
@@ -501,7 +535,22 @@ body {
   }
 
   .usual-routes__card {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 20px;
     padding: 24px 20px;
+  }
+
+  .usual-routes__order {
+    width: 100%;
+  }
+
+  .usual-routes__order form {
+    flex: 1;
+  }
+
+  .usual-routes__order-button {
+    width: 100%;
   }
 
   .usual-routes__name {
