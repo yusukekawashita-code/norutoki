@@ -1,0 +1,80 @@
+<main class="timetable-index">
+  <div class="timetable-index__inner">
+    <div class="timetable-index__header">
+      <div>
+        <p class="timetable-index__label">TIMETABLE</p>
+        <h1 class="timetable-index__title">時刻表一覧</h1>
+      </div>
+
+      <%= link_to "時刻表を登録する",
+                  new_usual_route_timetable_path(@usual_route),
+                  class: "timetable-index__new-link" %>
+    </div>
+
+    <div class="timetable-index__route">
+      <p class="timetable-index__route-name">
+        <%= @usual_route.name %>
+      </p>
+
+      <p class="timetable-index__route-path">
+        <%= @usual_route.boarding_place %>
+        →
+        <%= @usual_route.destination_place %>
+      </p>
+    </div>
+
+    <% if @timetables.any? %>
+      <div class="timetable-index__list">
+        <% @timetables.each do |timetable| %>
+          <section class="timetable-index__card">
+            <div class="timetable-index__card-header">
+              <h2 class="timetable-index__day-type">
+                <%= timetable.day_type == 0 ? "平日" : "土日祝" %>
+              </h2>
+
+              <%= link_to "編集する",
+                          edit_usual_route_timetable_path(@usual_route, timetable),
+                          class: "timetable-index__edit-link" %>
+            </div>
+
+            <% if timetable.departures.any? %>
+              <ul class="timetable-index__departures">
+                <% timetable.departures.sort_by(&:departure_time).each do |departure| %>
+                  <li class="timetable-index__departure">
+                    <time class="timetable-index__time">
+                      <%= departure.departure_time.strftime("%H:%M") %>
+                    </time>
+
+                    <% if departure.note.present? %>
+                      <span class="timetable-index__note">
+                        <%= departure.note %>
+                      </span>
+                    <% end %>
+                  </li>
+                <% end %>
+              </ul>
+            <% else %>
+              <p class="timetable-index__empty">
+                出発時刻はまだ登録されていません。
+              </p>
+            <% end %>
+          </section>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="timetable-index__empty">
+        <p>時刻表はまだ登録されていません。</p>
+
+        <%= link_to "最初の時刻表を登録する",
+                    new_usual_route_timetable_path(@usual_route),
+                    class: "timetable-index__new-link" %>
+      </div>
+    <% end %>
+
+    <div class="timetable-index__footer">
+      <%= link_to "ルート詳細へ戻る",
+                  usual_route_path(@usual_route),
+                  class: "timetable-index__back-link" %>
+    </div>
+  </div>
+</main>
