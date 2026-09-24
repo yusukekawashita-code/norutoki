@@ -478,6 +478,40 @@ body {
   background: #f1f3f5;
 }
 
+.usual-routes__favorite-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0 0 12px;
+  padding: 7px 12px;
+  border: 1px solid #ddd;
+  border-radius: 999px;
+  background: #fff;
+  color: #555;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  transition:
+    background-color 0.2s,
+    border-color 0.2s,
+    color 0.2s;
+}
+
+.usual-routes__favorite-button:hover {
+  background: #f7f7f7;
+}
+
+.usual-routes__favorite-button.is-favorite {
+  border-color: #e0b84c;
+  background: #fff8df;
+  color: #8a6500;
+}
+
+.usual-routes__favorite-button.is-favorite:hover {
+  background: #fff2c2;
+}
+
 .usual-routes__name {
   margin: 0 0 20px;
   font-size: 22px;
@@ -1447,6 +1481,19 @@ body {
   box-sizing: border-box;
 }
 
+.next-departures__favorite {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  margin: 8px 0 0;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: #fff8df;
+  color: #8a6500;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1;
+}
 /* ========================================
    My Page - Route Actions
 ======================================== */

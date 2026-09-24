@@ -121,6 +121,17 @@ class NextDeparturesControllerTest < ActionDispatch::IntegrationTest
     assert_equal "ログインしてください", flash[:alert]
   end
 
+  test "お気に入りルートにはお気に入り表示がされる" do
+    @usual_route.update!(favorite: true)
+
+    login
+
+    get next_departures_path
+
+    assert_response :success
+    assert_select ".next-departures__favorite", text: "★ お気に入り", count: 1
+  end
+
   test "ルートはpositionの順番で表示される" do
     first_route = @usual_route
 

@@ -22,6 +22,12 @@
                 <%= usual_route.name %>
               </h2>
 
+              <% if usual_route.favorite? %>
+                <p class="next-departures__favorite">
+                  ★ お気に入り
+                </p>
+              <% end %>
+
               <p class="next-departures__route-path">
                 <%= usual_route.boarding_place %>
                 <span>→</span>
