@@ -333,4 +333,112 @@ class UsualRoutesControllerTest < ActionDispatch::IntegrationTest
       assert_select "button", text: "削除する"
     end
   end
+
+  test "ログイン中のユーザーは自分のルートを上へ移動できる" do
+    user = users(:one)
+    first_route = usual_routes(:one)
+    first_route.update!(position: 0)
+
+    second_route = user.usual_routes.create!(
+      name: "2番目のルート",
+      boarding_place: "自宅",
+      destination_place: "梅田駅",
+      position: 1
+    )
+
+    post session_path, params: {
+      email: user.email,
+      password: "password"
+    }
+
+    patch move_up_usual_route_path(second_route)
+
+    first_route.reload
+    second_route.reload
+
+    assert_equal 1, first_route.position
+    assert_equal 0, second_route.position
+    assert_redirected_to usual_routes_path
+  end
+
+  test "ログイン中のユーザーは自分のルートを下へ移動できる" do
+    user = users(:one)
+    first_route = usual_routes(:one)
+    first_route.update!(position: 0)
+
+    second_route = user.usual_routes.create!(
+      name: "2番目のルート",
+      boarding_place: "自宅",
+      destination_place: "梅田駅",
+      position: 1
+    )
+
+    post session_path, params: {
+      email: user.email,
+      password: "password"
+    }
+
+    patch move_down_usual_route_path(first_route)
+
+    first_route.reload
+    second_route.reload
+
+    assert_equal 1, first_route.position
+    assert_equal 0, second_route.position
+    assert_redirected_to usual_routes_path
+  end
+
+  test "新しいルートは末尾のpositionで登録される" do
+    user = users(:one)
+
+    first_route = user.usual_routes.create!(
+      name: "1番目のルート",
+      boarding_place: "A",
+      destination_place: "B"
+    )
+
+    second_route = user.usual_routes.create!(
+      name: "2番目のルート",
+      boarding_place: "C",
+      destination_place: "D"
+    )
+
+    assert_equal first_route.position + 1, second_route.position
+  end
+
+  test "他のユーザーが登録したルートは並び替えできない" do
+    user = users(:one)
+    other_user_route = usual_routes(:two)
+    original_position = other_user_route.position
+
+    post session_path, params: {
+      email: user.email,
+      password: "password"
+    }
+
+    patch move_up_usual_route_path(other_user_route)
+
+    other_user_route.reload
+
+    assert_response :not_found
+    assert_equal original_position, other_user_route.position
+  end
+
+  test "他のユーザーが登録したルートは下へ並び替えできない" do
+    user = users(:one)
+    other_user_route = usual_routes(:two)
+    original_position = other_user_route.position
+
+    post session_path, params: {
+      email: user.email,
+      password: "password"
+    }
+
+    patch move_down_usual_route_path(other_user_route)
+
+    other_user_route.reload
+
+    assert_response :not_found
+    assert_equal original_position, other_user_route.position
+  end
 end

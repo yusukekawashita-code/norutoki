@@ -1,9 +1,9 @@
 class UsualRoutesController < ApplicationController
   before_action :require_login
-  before_action :set_usual_route, only: %i[show edit update destroy]
+  before_action :set_usual_route, only: %i[show edit update destroy move_up move_down]
 
   def index
-    @usual_routes = current_user.usual_routes
+    @usual_routes = current_user.usual_routes.ordered
   end
 
   def show
@@ -24,6 +24,42 @@ class UsualRoutesController < ApplicationController
     @usual_route.destroy
 
     redirect_to usual_routes_path, notice: "いつもの移動を削除しました"
+  end
+
+  def move_up
+    previous_route = current_user.usual_routes
+                                .where("position < ?", @usual_route.position)
+                                .order(position: :desc)
+                                .first
+
+    if previous_route
+      UsualRoute.transaction do
+        current_position = @usual_route.position
+
+        @usual_route.update!(position: previous_route.position)
+        previous_route.update!(position: current_position)
+      end
+    end
+
+    redirect_to usual_routes_path
+  end
+
+  def move_down
+    next_route = current_user.usual_routes
+                            .where("position > ?", @usual_route.position)
+                            .order(position: :asc)
+                            .first
+
+    if next_route
+      UsualRoute.transaction do
+        current_position = @usual_route.position
+
+        @usual_route.update!(position: next_route.position)
+        next_route.update!(position: current_position)
+      end
+    end
+
+    redirect_to usual_routes_path
   end
 
   def new

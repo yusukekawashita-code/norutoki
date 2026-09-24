@@ -5,7 +5,10 @@ class NextDeparturesController < ApplicationController
     current_time = Time.current
     day_type = Timetable.today_day_type(current_time.to_date)
 
-    @route_departures = current_user.usual_routes.includes(timetables: :departures).map do |usual_route|
+    @route_departures = current_user.usual_routes
+                                    .ordered
+                                    .includes(timetables: :departures)
+                                    .map do |usual_route|
       timetable = usual_route.timetables.find { |item| item.day_type == day_type }
       next_departure = timetable&.next_departure(current_time)
 

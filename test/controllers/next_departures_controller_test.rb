@@ -121,6 +121,29 @@ class NextDeparturesControllerTest < ActionDispatch::IntegrationTest
     assert_equal "ログインしてください", flash[:alert]
   end
 
+  test "ルートはpositionの順番で表示される" do
+    first_route = @usual_route
+
+    second_route = @user.usual_routes.create!(
+      name: "優先ルート",
+      boarding_place: "自宅",
+      destination_place: "梅田駅"
+    )
+
+    first_route.update!(position: 1)
+    second_route.update!(position: 0)
+
+    login
+
+    get next_departures_path
+
+    assert_response :success
+
+    route_names = css_select(".next-departures__route-name").map { |element| element.text.strip }
+
+    assert_equal [ second_route.name, first_route.name ], route_names
+  end
+
   private
 
   def login

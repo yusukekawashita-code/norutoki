@@ -38,4 +38,26 @@ class UsualRouteTest < ActiveSupport::TestCase
 
     assert_equal users(:one), route.user
   end
+
+  test "positionの昇順でルートを取得できる" do
+    user = users(:one)
+
+    first_route = user.usual_routes.create!(
+      name: "1番目のルート",
+      boarding_place: "A",
+      destination_place: "B",
+      position: 1
+    )
+
+    second_route = user.usual_routes.create!(
+      name: "2番目のルート",
+      boarding_place: "C",
+      destination_place: "D",
+      position: 2
+    )
+
+    routes = user.usual_routes.ordered
+
+    assert_operator routes.index(first_route), :<, routes.index(second_route)
+  end
 end
