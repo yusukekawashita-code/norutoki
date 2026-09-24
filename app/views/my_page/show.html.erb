@@ -29,15 +29,43 @@
     <section class="my-page__section">
       <h2 class="my-page__section-title">いつもの移動</h2>
 
-      <div class="my-page__empty">
-        <p class="my-page__empty-title">
-          いつもの移動はまだ登録されていません
-        </p>
+      <div class="my-page__route-actions">
+        <%= link_to "次の便を確認する",
+                    next_departures_path,
+                    class: "my-page__next-departures-link" %>
 
-        <p class="my-page__empty-text">
-          登録した移動がここに表示されます。
-        </p>
+        <%= link_to "ルート一覧を見る",
+                    usual_routes_path,
+                    class: "my-page__routes-link" %>
       </div>
+
+      <% if @usual_routes.any? %>
+        <div class="my-page__route-list">
+          <% @usual_routes.each do |usual_route| %>
+            <div class="my-page__route-item">
+              <p class="my-page__route-name">
+                <%= usual_route.name %>
+              </p>
+
+              <p class="my-page__route-path">
+                <%= usual_route.boarding_place %>
+                →
+                <%= usual_route.destination_place %>
+              </p>
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <div class="my-page__empty">
+          <p class="my-page__empty-title">
+            いつもの移動はまだ登録されていません
+          </p>
+
+          <p class="my-page__empty-text">
+            まずは普段利用するルートを登録してください。
+          </p>
+        </div>
+      <% end %>
     </section>
   </div>
 </main>

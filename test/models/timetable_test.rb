@@ -126,4 +126,22 @@ class TimetableTest < ActiveSupport::TestCase
       assert_equal "08:30", next_departure.departure_time.strftime("%H:%M")
     end
   end
+
+  test "平日はday_type 0を返す" do
+    date = Date.new(2026, 9, 24)
+
+    assert_equal 0, Timetable.today_day_type(date)
+  end
+
+  test "土曜日はday_type 1を返す" do
+    date = Date.new(2026, 9, 26)
+
+    assert_equal 1, Timetable.today_day_type(date)
+  end
+
+  test "日曜日はday_type 1を返す" do
+    date = Date.new(2026, 9, 27)
+
+    assert_equal 1, Timetable.today_day_type(date)
+  end
 end
