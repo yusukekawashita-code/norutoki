@@ -29,7 +29,11 @@
           <section class="timetable-index__card">
             <div class="timetable-index__card-header">
               <h2 class="timetable-index__day-type">
-                <%= timetable.day_type == 0 ? "平日" : "土日祝" %>
+                <%= {
+                      0 => "平日",
+                      1 => "土曜",
+                      2 => "日曜祝日"
+                    }[timetable.day_type] %>
               </h2>
 
               <%= link_to "編集する",
