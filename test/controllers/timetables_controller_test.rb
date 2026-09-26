@@ -53,6 +53,35 @@ class TimetablesControllerTest < ActionDispatch::IntegrationTest
     assert_equal "時刻表を登録しました", flash[:notice]
   end
 
+  test "平日・土曜・日曜祝日の時刻表をそれぞれ登録できる" do
+    post session_path, params: {
+      email: @user.email,
+      password: "password"
+    }
+
+    [
+      Timetable::DAY_TYPES[:weekday],
+      Timetable::DAY_TYPES[:saturday],
+      Timetable::DAY_TYPES[:sunday_holiday]
+    ].each do |day_type|
+      assert_difference "Timetable.count", 1 do
+        post usual_route_timetables_path(@usual_route), params: {
+          timetable: {
+            day_type: day_type,
+            departures_attributes: {
+              "0" => {
+                departure_time: "08:10",
+                note: ""
+              }
+            }
+          }
+        }
+      end
+
+      assert_equal day_type, Timetable.order(:created_at).last.day_type
+    end
+  end
+
   test "不正な値では時刻表を登録できない" do
     post session_path, params: {
       email: @user.email,
@@ -109,7 +138,7 @@ class TimetablesControllerTest < ActionDispatch::IntegrationTest
     assert_equal "ログインしてください", flash[:alert]
   end
 
-    test "ログイン中のユーザーは自分のルートの時刻表一覧を表示できる" do
+  test "ログイン中のユーザーは自分のルートの時刻表一覧を表示できる" do
     post session_path, params: {
       email: @user.email,
       password: "password"
