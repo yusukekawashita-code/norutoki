@@ -45,7 +45,7 @@ class TimetableTest < ActiveSupport::TestCase
     end
   end
 
-    test "現在時刻以降で最も近い便を取得できる" do
+  test "現在時刻以降で最も近い便を取得できる" do
     timetable = timetables(:one)
     timetable.departures.destroy_all
 
@@ -139,9 +139,19 @@ class TimetableTest < ActiveSupport::TestCase
     assert_equal 1, Timetable.today_day_type(date)
   end
 
-  test "日曜日はday_type 1を返す" do
+  test "日曜日はday_type 2を返す" do
     date = Date.new(2026, 9, 27)
 
-    assert_equal 1, Timetable.today_day_type(date)
+    assert_equal 2, Timetable.today_day_type(date)
+  end
+
+  test "day_typeが0・1・2以外なら無効" do
+    timetable = Timetable.new(
+      usual_route: usual_routes(:one),
+      day_type: 3
+    )
+
+    assert_not timetable.valid?
+    assert_includes timetable.errors[:day_type], "is not included in the list"
   end
 end

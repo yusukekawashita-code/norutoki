@@ -1,4 +1,10 @@
 class Timetable < ApplicationRecord
+  DAY_TYPES = {
+    weekday: 0,
+    saturday: 1,
+    sunday_holiday: 2
+  }.freeze
+
   belongs_to :usual_route
 
   has_many :departures, dependent: :destroy
@@ -7,7 +13,9 @@ class Timetable < ApplicationRecord
                                 reject_if: :all_blank,
                                 allow_destroy: true
 
-  validates :day_type, presence: true
+  validates :day_type,
+            presence: true,
+            inclusion: { in: DAY_TYPES.values }
 
   def next_departure(current_time = Time.current)
     current_seconds = seconds_since_midnight(current_time)
@@ -18,7 +26,10 @@ class Timetable < ApplicationRecord
   end
 
   def self.today_day_type(date = Time.zone.today)
-    date.saturday? || date.sunday? ? 1 : 0
+    return DAY_TYPES[:saturday] if date.saturday?
+    return DAY_TYPES[:sunday_holiday] if date.sunday?
+
+    DAY_TYPES[:weekday]
   end
 
   private
