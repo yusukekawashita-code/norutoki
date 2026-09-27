@@ -93,6 +93,69 @@ class UsualRoutesControllerTest < ActionDispatch::IntegrationTest
     assert_select ".usual-routes__direction", text: "帰り"
   end
 
+  test "行きを選択すると行きのルートだけ一覧表示される" do
+    user = users(:one)
+    outbound_route = usual_routes(:one)
+    outbound_route.update!(direction: UsualRoute::DIRECTIONS[:outbound])
+
+    inbound_route = user.usual_routes.create!(
+      name: "帰宅",
+      boarding_place: "大阪駅",
+      destination_place: "自宅前",
+      direction: UsualRoute::DIRECTIONS[:inbound]
+    )
+
+    post session_path, params: {
+      email: user.email,
+      password: "password"
+    }
+
+    get usual_routes_path(direction: UsualRoute::DIRECTIONS[:outbound])
+
+    assert_response :success
+    assert_match outbound_route.name, response.body
+    assert_no_match inbound_route.name, response.body
+  end
+
+  test "帰りを選択すると帰りのルートだけ一覧表示される" do
+    user = users(:one)
+    outbound_route = usual_routes(:one)
+    outbound_route.update!(direction: UsualRoute::DIRECTIONS[:outbound])
+
+    inbound_route = user.usual_routes.create!(
+      name: "帰宅",
+      boarding_place: "大阪駅",
+      destination_place: "自宅前",
+      direction: UsualRoute::DIRECTIONS[:inbound]
+    )
+
+    post session_path, params: {
+      email: user.email,
+      password: "password"
+    }
+
+    get usual_routes_path(direction: UsualRoute::DIRECTIONS[:inbound])
+
+    assert_response :success
+    assert_match inbound_route.name, response.body
+    assert_no_match outbound_route.name, response.body
+  end
+
+  test "選択した区分のルートが0件でも正常に表示される" do
+    user = users(:one)
+    user.usual_routes.update_all(direction: UsualRoute::DIRECTIONS[:outbound])
+
+    post session_path, params: {
+      email: user.email,
+      password: "password"
+    }
+
+    get usual_routes_path(direction: UsualRoute::DIRECTIONS[:inbound])
+
+    assert_response :success
+    assert_select ".usual-routes__empty", text: /帰り のルートはまだ登録されていません/
+  end
+
   test "ルートが0件の場合は案内メッセージが表示される" do
     user = users(:one)
     user.usual_routes.destroy_all

@@ -25,6 +25,26 @@ class NextDeparturesControllerTest < ActionDispatch::IntegrationTest
     assert_select ".next-departures__route-name", text: usual_routes(:two).name, count: 0
   end
 
+  test "次の便画面に行き帰りの区分が表示される" do
+    @usual_route.update!(direction: UsualRoute::DIRECTIONS[:outbound])
+
+    inbound_route = @user.usual_routes.create!(
+      name: "帰宅",
+      boarding_place: "大阪駅",
+      destination_place: "自宅前",
+      direction: UsualRoute::DIRECTIONS[:inbound]
+    )
+
+    login
+
+    get next_departures_path
+
+    assert_response :success
+    assert_select ".next-departures__direction", text: "行き", count: 1
+    assert_select ".next-departures__direction", text: "帰り", count: 1
+    assert_select ".next-departures__route-name", text: inbound_route.name
+  end
+
   test "現在時刻以降で最も近い便が表示される" do
     timetable = timetables(:one)
     timetable.update!(day_type: 0)
