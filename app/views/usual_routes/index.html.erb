@@ -18,6 +18,10 @@
                 <%= link_to usual_route.name, usual_route_path(usual_route), class: "usual-routes__name-link" %>
               </h2>
 
+              <p class="usual-routes__direction">
+                <%= usual_route.direction == UsualRoute::DIRECTIONS[:outbound] ? "行き" : "帰り" %>
+              </p>
+
               <%= button_to toggle_favorite_usual_route_path(usual_route),
                             method: :patch,
                             class: ["usual-routes__favorite-button", ("is-favorite" if usual_route.favorite?)],
