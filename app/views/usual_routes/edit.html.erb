@@ -40,6 +40,14 @@
                         class: "usual-route-edit__input" %>
       </div>
 
+       <div class="usual-route-edit__field">
+        <%= form.label :note, "メモ", class: "usual-route-edit__field-label" %>
+        <%= form.text_area :note,
+                           rows: 4,
+                           placeholder: "例：朝は駅前のバス停を利用",
+                           class: "usual-route-edit__input" %>
+      </div>
+
       <div class="usual-route-edit__actions">
         <%= form.submit "更新する", class: "usual-route-edit__submit" %>
         <%= link_to "キャンセル", usual_route_path(@usual_route), class: "usual-route-edit__cancel" %>

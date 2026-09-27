@@ -580,4 +580,93 @@ class UsualRoutesControllerTest < ActionDispatch::IntegrationTest
     assert_response :not_found
     assert_equal original_favorite, other_user_route.favorite
   end
+
+  test "ルート登録時にメモを保存できる" do
+    user = users(:one)
+
+    post session_path, params: {
+      email: user.email,
+      password: "password"
+    }
+
+    post usual_routes_path, params: {
+      usual_route: {
+        name: "メモ付きルート",
+        boarding_place: "難波",
+        destination_place: "堺",
+        direction: UsualRoute::DIRECTIONS[:inbound],
+        note: "雨の日は駅前のバス停を利用"
+      }
+    }
+
+    route = UsualRoute.last
+
+    assert_equal "雨の日は駅前のバス停を利用", route.note
+  end
+
+  test "ルート詳細画面にメモが表示される" do
+    user = users(:one)
+    usual_route = usual_routes(:one)
+    usual_route.update!(note: "朝は駅前のバス停を利用")
+
+    post session_path, params: {
+      email: user.email,
+      password: "password"
+    }
+
+    get usual_route_path(usual_route)
+
+    assert_response :success
+    assert_select ".usual-route-detail__note",
+                  text: "朝は駅前のバス停を利用"
+  end
+
+  test "ルートのメモを編集できる" do
+    user = users(:one)
+    usual_route = usual_routes(:one)
+    usual_route.update!(note: "変更前のメモ")
+
+    post session_path, params: {
+      email: user.email,
+      password: "password"
+    }
+
+    patch usual_route_path(usual_route), params: {
+      usual_route: {
+        name: usual_route.name,
+        boarding_place: usual_route.boarding_place,
+        destination_place: usual_route.destination_place,
+        direction: usual_route.direction,
+        note: "変更後のメモ"
+      }
+    }
+
+    usual_route.reload
+
+    assert_equal "変更後のメモ", usual_route.note
+    assert_redirected_to usual_route_path(usual_route)
+  end
+
+  test "メモが空欄でもルートを登録できる" do
+    user = users(:one)
+
+    post session_path, params: {
+      email: user.email,
+      password: "password"
+    }
+
+    assert_difference "UsualRoute.count", 1 do
+      post usual_routes_path, params: {
+        usual_route: {
+          name: "メモなしルート",
+          boarding_place: "堺",
+          destination_place: "難波",
+          direction: UsualRoute::DIRECTIONS[:outbound],
+          note: ""
+        }
+      }
+    end
+
+    assert_equal "", UsualRoute.last.note
+  end
 end
