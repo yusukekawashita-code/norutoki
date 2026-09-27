@@ -31,6 +31,15 @@
         <%= form.text_field :destination_place, class: "usual-route-edit__input" %>
       </div>
 
+      <div class="usual-route-edit__field">
+        <%= form.label :direction, "ルート区分", class: "usual-route-edit__field-label" %>
+        <%= form.select :direction,
+                        [["行き", UsualRoute::DIRECTIONS[:outbound]],
+                         ["帰り", UsualRoute::DIRECTIONS[:inbound]]],
+                        {},
+                        class: "usual-route-edit__input" %>
+      </div>
+
       <div class="usual-route-edit__actions">
         <%= form.submit "更新する", class: "usual-route-edit__submit" %>
         <%= link_to "キャンセル", usual_route_path(@usual_route), class: "usual-route-edit__cancel" %>

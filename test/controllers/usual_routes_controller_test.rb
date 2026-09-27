@@ -14,7 +14,8 @@ class UsualRoutesControllerTest < ActionDispatch::IntegrationTest
         usual_route: {
           name: "通勤",
           boarding_place: "自宅前",
-          destination_place: "大阪駅"
+          destination_place: "大阪駅",
+          direction: UsualRoute::DIRECTIONS[:inbound]
         }
       }
     end
@@ -25,6 +26,7 @@ class UsualRoutesControllerTest < ActionDispatch::IntegrationTest
     assert_equal "通勤", route.name
     assert_equal "自宅前", route.boarding_place
     assert_equal "大阪駅", route.destination_place
+    assert_equal UsualRoute::DIRECTIONS[:inbound], route.direction
     assert_redirected_to my_page_path
     assert_equal "いつもの移動を登録しました", flash[:notice]
   end
@@ -73,6 +75,22 @@ class UsualRoutesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_match usual_routes(:one).name, response.body
     assert_no_match usual_routes(:two).name, response.body
+  end
+
+  test "ルート一覧に行き帰りの区分が表示される" do
+    user = users(:one)
+    usual_route = usual_routes(:one)
+    usual_route.update!(direction: UsualRoute::DIRECTIONS[:inbound])
+
+    post session_path, params: {
+      email: user.email,
+      password: "password"
+    }
+
+    get usual_routes_path
+
+    assert_response :success
+    assert_select ".usual-routes__direction", text: "帰り"
   end
 
   test "ルートが0件の場合は案内メッセージが表示される" do
@@ -157,6 +175,7 @@ class UsualRoutesControllerTest < ActionDispatch::IntegrationTest
   test "ログイン中のユーザーは自分のルートを更新できる" do
     user = users(:one)
     usual_route = usual_routes(:one)
+    usual_route.update!(direction: UsualRoute::DIRECTIONS[:outbound])
 
     post session_path, params: {
       email: user.email,
@@ -167,7 +186,8 @@ class UsualRoutesControllerTest < ActionDispatch::IntegrationTest
       usual_route: {
         name: "更新後のルート",
         boarding_place: "更新後の出発地",
-        destination_place: "更新後の目的地"
+        destination_place: "更新後の目的地",
+        direction: UsualRoute::DIRECTIONS[:inbound]
       }
     }
 
@@ -176,6 +196,7 @@ class UsualRoutesControllerTest < ActionDispatch::IntegrationTest
     assert_equal "更新後のルート", usual_route.name
     assert_equal "更新後の出発地", usual_route.boarding_place
     assert_equal "更新後の目的地", usual_route.destination_place
+    assert_equal UsualRoute::DIRECTIONS[:inbound], usual_route.direction
     assert_redirected_to usual_route_path(usual_route)
     assert_equal "いつもの移動を更新しました", flash[:notice]
   end

@@ -27,6 +27,15 @@
   </div>
 
   <div>
+    <%= form.label :direction, "ルート区分" %>
+    <%= form.select :direction,
+                    [["行き", UsualRoute::DIRECTIONS[:outbound]],
+                     ["帰り", UsualRoute::DIRECTIONS[:inbound]]],
+                    {},
+                    required: true %>
+  </div>
+
+  <div>
     <%= form.submit "登録する" %>
   </div>
 <% end %>

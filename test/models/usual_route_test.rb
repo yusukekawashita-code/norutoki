@@ -60,4 +60,26 @@ class UsualRouteTest < ActiveSupport::TestCase
 
     assert_operator routes.index(first_route), :<, routes.index(second_route)
   end
+
+  test "行きの区分を設定できる" do
+    route = usual_routes(:one)
+    route.direction = UsualRoute::DIRECTIONS[:outbound]
+
+    assert route.valid?
+  end
+
+  test "帰りの区分を設定できる" do
+    route = usual_routes(:one)
+    route.direction = UsualRoute::DIRECTIONS[:inbound]
+
+    assert route.valid?
+  end
+
+  test "行き帰り以外の区分は設定できない" do
+    route = usual_routes(:one)
+    route.direction = 2
+
+    assert_not route.valid?
+    assert_includes route.errors[:direction], "is not included in the list"
+  end
 end

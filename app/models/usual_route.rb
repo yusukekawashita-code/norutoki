@@ -1,4 +1,9 @@
 class UsualRoute < ApplicationRecord
+  DIRECTIONS = {
+    outbound: 0,
+    inbound: 1
+  }.freeze
+
   belongs_to :user
 
   has_many :timetables, dependent: :destroy
@@ -10,6 +15,9 @@ class UsualRoute < ApplicationRecord
   validates :name, presence: true
   validates :boarding_place, presence: true
   validates :destination_place, presence: true
+  validates :direction,
+            presence: true,
+            inclusion: { in: DIRECTIONS.values }
 
   private
 
