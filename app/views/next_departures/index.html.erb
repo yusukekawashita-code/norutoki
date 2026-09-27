@@ -22,6 +22,10 @@
                 <%= usual_route.name %>
               </h2>
 
+              <p class="next-departures__direction">
+                <%= usual_route.direction == UsualRoute::DIRECTIONS[:outbound] ? "行き" : "帰り" %>
+              </p>
+
               <% if usual_route.favorite? %>
                 <p class="next-departures__favorite">
                   ★ お気に入り

@@ -9,6 +9,20 @@
       <%= link_to "新しいルートを登録", new_usual_route_path, class: "usual-routes__new-link" %>
     </div>
 
+    <div class="usual-routes__filters">
+      <%= link_to "すべて",
+                  usual_routes_path,
+                  class: ["usual-routes__filter", ("is-active" if @direction.blank?)] %>
+
+      <%= link_to "行き",
+                  usual_routes_path(direction: UsualRoute::DIRECTIONS[:outbound]),
+                  class: ["usual-routes__filter", ("is-active" if @direction == UsualRoute::DIRECTIONS[:outbound].to_s)] %>
+
+      <%= link_to "帰り",
+                  usual_routes_path(direction: UsualRoute::DIRECTIONS[:inbound]),
+                  class: ["usual-routes__filter", ("is-active" if @direction == UsualRoute::DIRECTIONS[:inbound].to_s)] %>
+    </div>
+
     <% if @usual_routes.any? %>
       <div class="usual-routes__list">
         <% @usual_routes.each_with_index do |usual_route, index| %>
@@ -59,8 +73,16 @@
       </div>
     <% else %>
       <div class="usual-routes__empty">
-        <p>いつもの移動はまだ登録されていません</p>
-        <%= link_to "最初のルートを登録する", new_usual_route_path %>
+        <% if @direction.present? %>
+          <p>
+            <%= @direction == UsualRoute::DIRECTIONS[:outbound].to_s ? "行き" : "帰り" %>
+            のルートはまだ登録されていません
+          </p>
+          <%= link_to "新しいルートを登録する", new_usual_route_path %>
+        <% else %>
+          <p>いつもの移動はまだ登録されていません</p>
+          <%= link_to "最初のルートを登録する", new_usual_route_path %>
+        <% end %>
       </div>
     <% end %>
   </div>

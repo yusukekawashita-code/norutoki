@@ -3,7 +3,12 @@ class UsualRoutesController < ApplicationController
   before_action :set_usual_route, only: %i[show edit update destroy move_up move_down toggle_favorite]
 
   def index
+    @direction = params[:direction]
     @usual_routes = current_user.usual_routes.ordered
+
+    if UsualRoute::DIRECTIONS.value?(@direction.to_i) && @direction.present?
+      @usual_routes = @usual_routes.where(direction: @direction)
+    end
   end
 
   def show
