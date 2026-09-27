@@ -49,14 +49,36 @@
                             new_usual_route_timetable_path(usual_route),
                             class: "next-departures__link" %>
 
-              <% elsif next_departure.nil? %>
-                <p class="next-departures__status">
-                  本日の便は終了しました
-                </p>
+                <% elsif next_departure.nil? %>
+                  <% tomorrow_departure = route_departure[:tomorrow_departure] %>
 
-                <%= link_to "時刻表を確認する",
-                            usual_route_timetables_path(usual_route),
-                            class: "next-departures__link" %>
+                  <p class="next-departures__status">
+                    本日の便は終了しました
+                  </p>
+
+                  <% if tomorrow_departure.present? %>
+                    <p class="next-departures__next-label">
+                      明日の最初の便
+                    </p>
+
+                    <p class="next-departures__time">
+                      <%= tomorrow_departure.departure_time.strftime("%H:%M") %>
+                    </p>
+
+                    <% if tomorrow_departure.note.present? %>
+                      <p class="next-departures__note">
+                        <%= tomorrow_departure.note %>
+                      </p>
+                    <% end %>
+                  <% else %>
+                    <p class="next-departures__status">
+                      明日の便は登録されていません
+                    </p>
+                  <% end %>
+
+                  <%= link_to "時刻表を確認する",
+                              usual_route_timetables_path(usual_route),
+                              class: "next-departures__link" %>
 
               <% else %>
                 <p class="next-departures__next-label">
