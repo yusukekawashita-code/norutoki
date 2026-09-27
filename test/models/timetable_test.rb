@@ -145,6 +145,20 @@ class TimetableTest < ActiveSupport::TestCase
     assert_equal 2, Timetable.today_day_type(date)
   end
 
+  test "登録順に関係なく最初の便を取得できる" do
+    timetable = timetables(:one)
+    timetable.departures.destroy_all
+
+    timetable.departures.create!(departure_time: "08:30", note: "2便目")
+    timetable.departures.create!(departure_time: "07:00", note: "始発")
+    timetable.departures.create!(departure_time: "09:00", note: "3便目")
+
+    first_departure = timetable.first_departure
+
+    assert_equal "07:00", first_departure.departure_time.strftime("%H:%M")
+    assert_equal "始発", first_departure.note
+  end
+
   test "day_typeが0・1・2以外なら無効" do
     timetable = Timetable.new(
       usual_route: usual_routes(:one),

@@ -45,6 +45,39 @@ class NextDeparturesControllerTest < ActionDispatch::IntegrationTest
     assert_select ".next-departures__route-name", text: inbound_route.name
   end
 
+  test "土曜日の便終了後は日曜祝日の最初の便を表示する" do
+    @usual_route.timetables.destroy_all
+
+    saturday_timetable = @usual_route.timetables.create!(
+      day_type: Timetable::DAY_TYPES[:saturday]
+    )
+    saturday_timetable.departures.create!(
+      departure_time: "20:00",
+      note: "土曜最終便"
+    )
+
+    sunday_timetable = @usual_route.timetables.create!(
+      day_type: Timetable::DAY_TYPES[:sunday_holiday]
+    )
+    sunday_timetable.departures.create!(
+      departure_time: "07:30",
+      note: "日曜始発"
+    )
+
+    login
+
+    travel_to Time.zone.local(2026, 9, 26, 21, 0, 0) do
+      get next_departures_path
+
+      assert_response :success
+      assert_select ".next-departures__status", text: "本日の便は終了しました"
+      assert_select ".next-departures__next-label", text: "明日の最初の便"
+      assert_select ".next-departures__time", text: "07:30"
+      assert_select ".next-departures__note", text: "日曜始発"
+      assert_select ".next-departures__countdown", count: 0
+    end
+  end
+
   test "現在時刻以降で最も近い便が表示される" do
     timetable = timetables(:one)
     timetable.update!(day_type: 0)
@@ -187,14 +220,27 @@ class NextDeparturesControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "本日の便がすべて終了している場合はその旨を表示する" do
-    timetable = timetables(:one)
-    timetable.update!(day_type: 0)
-    timetable.departures.destroy_all
+  test "本日の便が終了している場合は翌日の最初の便を表示する" do
+    @usual_route.timetables.destroy_all
 
-    timetable.departures.create!(
+    weekday_timetable = @usual_route.timetables.create!(
+      day_type: Timetable::DAY_TYPES[:weekday]
+    )
+    weekday_timetable.departures.create!(
       departure_time: "08:10",
-      note: "快速"
+      note: "平日最終便"
+    )
+
+    saturday_timetable = @usual_route.timetables.create!(
+      day_type: Timetable::DAY_TYPES[:saturday]
+    )
+    saturday_timetable.departures.create!(
+      departure_time: "08:30",
+      note: "土曜2便目"
+    )
+    saturday_timetable.departures.create!(
+      departure_time: "07:00",
+      note: "土曜始発"
     )
 
     login
@@ -204,6 +250,9 @@ class NextDeparturesControllerTest < ActionDispatch::IntegrationTest
 
       assert_response :success
       assert_select ".next-departures__status", text: "本日の便は終了しました"
+      assert_select ".next-departures__next-label", text: "明日の最初の便"
+      assert_select ".next-departures__time", text: "07:00"
+      assert_select ".next-departures__note", text: "土曜始発"
       assert_select ".next-departures__countdown", count: 0
     end
   end
@@ -220,6 +269,29 @@ class NextDeparturesControllerTest < ActionDispatch::IntegrationTest
       assert_select ".next-departures__status",
                     text: "時刻表が登録されていません"
       assert_select ".next-departures__countdown", count: 0
+    end
+  end
+
+  test "翌日の時刻表が登録されていない場合も正常に表示される" do
+    @usual_route.timetables.destroy_all
+
+    weekday_timetable = @usual_route.timetables.create!(
+      day_type: Timetable::DAY_TYPES[:weekday]
+    )
+    weekday_timetable.departures.create!(
+      departure_time: "08:10",
+      note: "平日最終便"
+    )
+
+    login
+
+    travel_to Time.zone.local(2026, 9, 25, 9, 0, 0) do
+      get next_departures_path
+
+      assert_response :success
+      assert_select ".next-departures__status", text: "本日の便は終了しました"
+      assert_select ".next-departures__status", text: "明日の便は登録されていません"
+      assert_select ".next-departures__time", count: 0
     end
   end
 

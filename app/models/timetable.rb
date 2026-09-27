@@ -25,6 +25,10 @@ class Timetable < ApplicationRecord
       .min_by { |departure| seconds_since_midnight(departure.departure_time) }
   end
 
+  def first_departure
+    departures.min_by { |departure| seconds_since_midnight(departure.departure_time) }
+  end
+
   def self.today_day_type(date = Time.zone.today)
     return DAY_TYPES[:saturday] if date.saturday?
     return DAY_TYPES[:sunday_holiday] if date.sunday?
