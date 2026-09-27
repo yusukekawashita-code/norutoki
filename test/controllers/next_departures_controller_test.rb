@@ -51,6 +51,95 @@ class NextDeparturesControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "土曜日は土曜の時刻表から次の便を表示する" do
+    @usual_route.timetables.destroy_all
+
+    timetable = @usual_route.timetables.create!(
+      day_type: Timetable::DAY_TYPES[:saturday]
+    )
+
+    timetable.departures.create!(
+      departure_time: "08:10",
+      note: "土曜便"
+    )
+
+    login
+
+    travel_to Time.zone.local(2026, 9, 26, 8, 0, 0) do
+      get next_departures_path
+
+      assert_response :success
+      assert_select ".next-departures__time", text: "08:10"
+      assert_select ".next-departures__note", text: "土曜便"
+      assert_select ".next-departures__countdown", text: "あと10分"
+    end
+  end
+
+  test "日曜日は日曜祝日の時刻表から次の便を表示する" do
+    @usual_route.timetables.destroy_all
+
+    timetable = @usual_route.timetables.create!(
+      day_type: Timetable::DAY_TYPES[:sunday_holiday]
+    )
+
+    timetable.departures.create!(
+      departure_time: "09:15",
+      note: "日曜便"
+    )
+
+    login
+
+    travel_to Time.zone.local(2026, 9, 27, 9, 0, 0) do
+      get next_departures_path
+
+      assert_response :success
+      assert_select ".next-departures__time", text: "09:15"
+      assert_select ".next-departures__note", text: "日曜便"
+      assert_select ".next-departures__countdown", text: "あと15分"
+    end
+  end
+
+  test "現在の曜日に対応する時刻表だけを対象にする" do
+    @usual_route.timetables.destroy_all
+
+    weekday_timetable = @usual_route.timetables.create!(
+      day_type: Timetable::DAY_TYPES[:weekday]
+    )
+    weekday_timetable.departures.create!(
+      departure_time: "08:05",
+      note: "平日便"
+    )
+
+    saturday_timetable = @usual_route.timetables.create!(
+      day_type: Timetable::DAY_TYPES[:saturday]
+    )
+    saturday_timetable.departures.create!(
+      departure_time: "08:10",
+      note: "土曜便"
+    )
+
+    sunday_timetable = @usual_route.timetables.create!(
+      day_type: Timetable::DAY_TYPES[:sunday_holiday]
+    )
+    sunday_timetable.departures.create!(
+      departure_time: "08:15",
+      note: "日曜便"
+    )
+
+    login
+
+    travel_to Time.zone.local(2026, 9, 26, 8, 0, 0) do
+      get next_departures_path
+
+      assert_response :success
+      assert_select ".next-departures__time", text: "08:10"
+      assert_select ".next-departures__note", text: "土曜便"
+
+      assert_select ".next-departures__time", text: "08:05", count: 0
+      assert_select ".next-departures__time", text: "08:15", count: 0
+    end
+  end
+
   test "時間の経過後に再読み込みすると残り時間が更新される" do
     timetable = timetables(:one)
     timetable.update!(day_type: 0)
