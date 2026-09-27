@@ -94,6 +94,6 @@ class UsualRoutesController < ApplicationController
   end
 
   def usual_route_params
-    params.expect(usual_route: %i[name boarding_place destination_place direction])
+    params.expect(usual_route: %i[name boarding_place destination_place direction note])
   end
 end

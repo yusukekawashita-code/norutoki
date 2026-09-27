@@ -36,6 +36,13 @@
   </div>
 
   <div>
+    <%= form.label :note, "メモ" %>
+    <%= form.text_area :note,
+                      rows: 4,
+                      placeholder: "例：朝は駅前のバス停を利用" %>
+  </div>
+
+  <div>
     <%= form.submit "登録する" %>
   </div>
 <% end %>

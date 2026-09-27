@@ -28,6 +28,15 @@
           <%= @usual_route.destination_place %>
         </p>
       </div>
+
+      <% if @usual_route.note.present? %>
+        <div class="usual-route-detail__item">
+          <p class="usual-route-detail__item-label">メモ</p>
+          <div class="usual-route-detail__item-value usual-route-detail__note">
+            <%= simple_format(@usual_route.note) %>
+          </div>
+        </div>
+      <% end %>
     </div>
 
     <div class="usual-route-detail__actions">
