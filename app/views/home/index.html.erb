@@ -27,6 +27,98 @@
     </div>
   </section>
 
+  <% if current_user %>
+    <section class="top-next-departures">
+      <div class="top-next-departures__inner">
+        <div class="top-next-departures__header">
+          <p class="top-next-departures__label">NEXT BUS</p>
+          <h2 class="top-next-departures__title">いつもの次の便</h2>
+        </div>
+
+        <% if @route_departures.any? %>
+          <div class="top-next-departures__list">
+            <% @route_departures.each do |route_departure| %>
+              <% usual_route = route_departure[:usual_route] %>
+              <% timetable = route_departure[:timetable] %>
+              <% next_departure = route_departure[:next_departure] %>
+              <% tomorrow_departure = route_departure[:tomorrow_departure] %>
+              <% minutes_until_departure = route_departure[:minutes_until_departure] %>
+
+              <article class="top-next-departures__card">
+                <div class="top-next-departures__route">
+                  <div class="top-next-departures__route-heading">
+                    <h3 class="top-next-departures__route-name">
+                      <%= usual_route.name %>
+                    </h3>
+
+                    <span class="top-next-departures__direction">
+                      <%= usual_route.direction == UsualRoute::DIRECTIONS[:outbound] ? "行き" : "帰り" %>
+                    </span>
+                  </div>
+
+                  <p class="top-next-departures__route-path">
+                    <%= usual_route.boarding_place %>
+                    <span>→</span>
+                    <%= usual_route.destination_place %>
+                  </p>
+                </div>
+
+                <div class="top-next-departures__result">
+                  <% if timetable.nil? %>
+                    <p class="top-next-departures__status">
+                      時刻表が登録されていません
+                    </p>
+
+                  <% elsif next_departure.present? %>
+                    <p class="top-next-departures__next-label">
+                      次の出発
+                    </p>
+
+                    <p class="top-next-departures__time">
+                      <%= next_departure.departure_time.strftime("%H:%M") %>
+                    </p>
+
+                    <p class="top-next-departures__countdown">
+                      あと<%= minutes_until_departure %>分
+                    </p>
+
+                  <% elsif tomorrow_departure.present? %>
+                    <p class="top-next-departures__next-label">
+                      明日の最初の便
+                    </p>
+
+                    <p class="top-next-departures__time">
+                      <%= tomorrow_departure.departure_time.strftime("%H:%M") %>
+                    </p>
+
+                  <% else %>
+                    <p class="top-next-departures__status">
+                      利用できる便が登録されていません
+                    </p>
+                  <% end %>
+                </div>
+              </article>
+            <% end %>
+          </div>
+
+          <div class="top-next-departures__actions">
+            <%= link_to "次の便を詳しく見る",
+                        next_departures_path,
+                        class: "top-next-departures__link" %>
+          </div>
+        <% else %>
+          <div class="top-next-departures__empty">
+            <p>いつもの移動はまだ登録されていません。</p>
+
+            <%= link_to "ルートを登録する",
+                        new_usual_route_path,
+                        class: "top-next-departures__link" %>
+          </div>
+        <% end %>
+      </div>
+    </section>
+  <% end %>
+
   <section class="top-about">
     <div class="top-about__inner">
       <h2 class="top-about__title">
