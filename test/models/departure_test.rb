@@ -17,7 +17,7 @@ class DepartureTest < ActiveSupport::TestCase
     )
 
     assert_not departure.valid?
-    assert_includes departure.errors[:timetable], "must exist"
+    assert_includes departure.errors[:timetable], "を入力してください"
   end
 
   test "departure_timeがなければ無効" do
@@ -27,7 +27,7 @@ class DepartureTest < ActiveSupport::TestCase
     )
 
     assert_not departure.valid?
-    assert_includes departure.errors[:departure_time], "can't be blank"
+    assert_includes departure.errors[:departure_time], "を入力してください"
   end
 
   test "timetableを削除すると紐づくdeparturesも削除される" do

@@ -1,0 +1,23 @@
+ja:
+  activerecord:
+    attributes:
+      user:
+        name: "名前"
+        email: "メールアドレス"
+        password: "パスワード"
+        password_confirmation: "パスワード確認"
+
+      usual_route:
+        name: "ルート名"
+        boarding_place: "乗車場所"
+        destination_place: "目的地"
+        direction: "行き・帰り"
+        note: "メモ"
+
+      timetable:
+        usual_route: "ルート"
+        day_type: "曜日区分"
+
+      departure:
+        timetable: "時刻表"
+        departure_time: "出発時刻"

@@ -21,7 +21,7 @@ class UserTest < ActiveSupport::TestCase
     )
 
     assert_not user.valid?
-    assert_includes user.errors[:name], "can't be blank"
+    assert_includes user.errors[:name], "を入力してください"
   end
 
   test "invalid without email" do
@@ -33,7 +33,7 @@ class UserTest < ActiveSupport::TestCase
     )
 
     assert_not user.valid?
-    assert_includes user.errors[:email], "can't be blank"
+    assert_includes user.errors[:email], "を入力してください"
   end
 
   test "invalid with duplicate email" do
@@ -47,7 +47,7 @@ class UserTest < ActiveSupport::TestCase
     )
 
     assert_not user.valid?
-    assert_includes user.errors[:email], "has already been taken"
+    assert_includes user.errors[:email], "はすでに存在します"
   end
 
   test "authenticates with correct password" do

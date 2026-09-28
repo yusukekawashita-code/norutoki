@@ -17,7 +17,7 @@ class TimetableTest < ActiveSupport::TestCase
     )
 
     assert_not timetable.valid?
-    assert_includes timetable.errors[:usual_route], "must exist"
+    assert_includes timetable.errors[:usual_route], "を入力してください"
   end
 
   test "day_typeがなければ無効" do
@@ -27,7 +27,7 @@ class TimetableTest < ActiveSupport::TestCase
     )
 
     assert_not timetable.valid?
-    assert_includes timetable.errors[:day_type], "can't be blank"
+    assert_includes timetable.errors[:day_type], "を入力してください"
   end
 
   test "usual_routeに紐づくtimetablesを取得できる" do
@@ -166,6 +166,6 @@ class TimetableTest < ActiveSupport::TestCase
     )
 
     assert_not timetable.valid?
-    assert_includes timetable.errors[:day_type], "is not included in the list"
+    assert_includes timetable.errors[:day_type], "は一覧にありません"
   end
 end

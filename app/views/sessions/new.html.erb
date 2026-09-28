@@ -1,17 +1,44 @@
-<h1>ログイン</h1>
+<main class="auth-page">
+  <div class="auth-page__inner">
+    <div class="auth-page__header">
+      <p class="auth-page__label">LOGIN</p>
+      <h1 class="auth-page__title">ログイン</h1>
+      <p class="auth-page__description">
+        登録したメールアドレスとパスワードを入力してください。
+      </p>
+    </div>
 
-<%= form_with url: session_path do |form| %>
-  <div>
-    <label for="email">メールアドレス</label>
-    <%= form.email_field :email %>
-  </div>
+    <div class="auth-page__card">
+      <%= form_with url: session_path, class: "auth-form" do |form| %>
+        <div class="auth-form__field">
+          <%= form.label :email, "メールアドレス", class: "auth-form__label" %>
+          <%= form.email_field :email,
+                               class: "auth-form__input",
+                               autocomplete: "email",
+                               placeholder: "example@example.com" %>
+        </div>
 
-  <div>
-    <label for="password">パスワード</label>
-    <%= form.password_field :password %>
-  </div>
+        <div class="auth-form__field">
+          <%= form.label :password, "パスワード", class: "auth-form__label" %>
+          <%= form.password_field :password,
+                                  class: "auth-form__input",
+                                  autocomplete: "current-password" %>
+        </div>
 
-  <div>
-    <%= form.submit "ログイン" %>
+        <div class="auth-form__actions">
+          <%= form.submit "ログイン", class: "auth-form__submit" %>
+        </div>
+      <% end %>
+
+      <div class="auth-page__register">
+        <p class="auth-page__register-text">
+          アカウントをお持ちでない方
+        </p>
+
+        <%= link_to "ユーザー登録",
+                    new_user_path,
+                    class: "auth-page__register-link" %>
+      </div>
+    </div>
   </div>
-<% end %>
+</main>

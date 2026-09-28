@@ -1,48 +1,94 @@
-<h1>いつもの移動を登録</h1>
+<main class="usual-route-edit">
+  <div class="usual-route-edit__inner">
+    <div class="usual-route-edit__header">
+      <p class="usual-route-edit__label">NEW ROUTE</p>
+      <h1 class="usual-route-edit__title">いつもの移動を登録</h1>
+    </div>
 
-<% if @usual_route.errors.any? %>
-  <div>
-    <ul>
-      <% @usual_route.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-    </ul>
-  </div>
-<% end %>
+    <% if @usual_route.errors.any? %>
+      <div class="usual-route-edit__errors">
+        <p class="usual-route-edit__errors-title">
+          入力内容をご確認ください
+        </p>
 
-<%= form_with model: @usual_route do |form| %>
-  <div>
-    <%= form.label :name, "ルート名" %>
-    <%= form.text_field :name, required: true %>
-  </div>
+        <ul>
+          <% @usual_route.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
 
-  <div>
-    <%= form.label :boarding_place, "出発地" %>
-    <%= form.text_field :boarding_place, required: true %>
-  </div>
+    <%= form_with model: @usual_route,
+                  class: "usual-route-edit__form" do |form| %>
 
-  <div>
-    <%= form.label :destination_place, "目的地" %>
-    <%= form.text_field :destination_place, required: true %>
-  </div>
+      <div class="usual-route-edit__field">
+        <%= form.label :name,
+                       "ルート名",
+                       class: "usual-route-edit__field-label" %>
 
-  <div>
-    <%= form.label :direction, "ルート区分" %>
-    <%= form.select :direction,
-                    [["行き", UsualRoute::DIRECTIONS[:outbound]],
-                     ["帰り", UsualRoute::DIRECTIONS[:inbound]]],
-                    {},
-                    required: true %>
-  </div>
+        <%= form.text_field :name,
+                            required: true,
+                            placeholder: "例：通勤",
+                            class: "usual-route-edit__input" %>
+      </div>
 
-  <div>
-    <%= form.label :note, "メモ" %>
-    <%= form.text_area :note,
-                      rows: 4,
-                      placeholder: "例：朝は駅前のバス停を利用" %>
-  </div>
+      <div class="usual-route-edit__field">
+        <%= form.label :boarding_place,
+                       "出発地",
+                       class: "usual-route-edit__field-label" %>
 
-  <div>
-    <%= form.submit "登録する" %>
+        <%= form.text_field :boarding_place,
+                            required: true,
+                            placeholder: "例：堺",
+                            class: "usual-route-edit__input" %>
+      </div>
+
+      <div class="usual-route-edit__field">
+        <%= form.label :destination_place,
+                       "目的地",
+                       class: "usual-route-edit__field-label" %>
+
+        <%= form.text_field :destination_place,
+                            required: true,
+                            placeholder: "例：難波",
+                            class: "usual-route-edit__input" %>
+      </div>
+
+      <div class="usual-route-edit__field">
+        <%= form.label :direction,
+                       "ルート区分",
+                       class: "usual-route-edit__field-label" %>
+
+        <%= form.select :direction,
+                        [
+                          ["行き", UsualRoute::DIRECTIONS[:outbound]],
+                          ["帰り", UsualRoute::DIRECTIONS[:inbound]]
+                        ],
+                        {},
+                        required: true,
+                        class: "usual-route-edit__input" %>
+      </div>
+
+      <div class="usual-route-edit__field">
+        <%= form.label :note,
+                       "メモ",
+                       class: "usual-route-edit__field-label" %>
+
+        <%= form.text_area :note,
+                           rows: 4,
+                           placeholder: "例：朝は駅前のバス停を利用",
+                           class: "usual-route-edit__input" %>
+      </div>
+
+      <div class="usual-route-edit__actions">
+        <%= form.submit "登録する",
+                        class: "usual-route-edit__submit" %>
+
+        <%= link_to "キャンセル",
+                    usual_routes_path,
+                    class: "usual-route-edit__cancel" %>
+      </div>
+    <% end %>
   </div>
-<% end %>
+</main>

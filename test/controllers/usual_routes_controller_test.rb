@@ -50,9 +50,9 @@ class UsualRoutesControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_response :unprocessable_entity
-    assert_select "li", text: "Name can't be blank"
-    assert_select "li", text: "Boarding place can't be blank"
-    assert_select "li", text: "Destination place can't be blank"
+    assert_select "li", text: "ルート名を入力してください"
+    assert_select "li", text: "乗車場所を入力してください"
+    assert_select "li", text: "目的地を入力してください"
   end
 
   test "未ログインユーザーはルート登録画面にアクセスできない" do
@@ -286,9 +286,9 @@ class UsualRoutesControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :unprocessable_entity
     assert_equal original_name, usual_route.name
-    assert_select "li", text: "Name can't be blank"
-    assert_select "li", text: "Boarding place can't be blank"
-    assert_select "li", text: "Destination place can't be blank"
+    assert_select "li", text: "ルート名を入力してください"
+    assert_select "li", text: "乗車場所を入力してください"
+    assert_select "li", text: "目的地を入力してください"
   end
 
   test "他のユーザーが登録したルートの編集画面にはアクセスできない" do
