@@ -39,6 +39,77 @@
       <% end %>
     </div>
 
+    <section class="usual-route-detail__next-departure">
+      <div class="usual-route-detail__next-header">
+        <p class="usual-route-detail__next-label">NEXT BUS</p>
+        <h2 class="usual-route-detail__next-title">次の便</h2>
+      </div>
+
+      <div class="usual-route-detail__next-card">
+        <% timetable = @route_departure[:timetable] %>
+        <% next_departure = @route_departure[:next_departure] %>
+        <% tomorrow_departure = @route_departure[:tomorrow_departure] %>
+        <% minutes_until_departure = @route_departure[:minutes_until_departure] %>
+
+        <% if timetable.nil? %>
+          <p class="usual-route-detail__next-status">
+            時刻表が登録されていません
+          </p>
+
+          <%= link_to "時刻表を登録する",
+                      new_usual_route_timetable_path(@usual_route),
+                      class: "usual-route-detail__next-link" %>
+
+        <% elsif next_departure.present? %>
+          <p class="usual-route-detail__next-caption">
+            次の出発
+          </p>
+
+          <p class="usual-route-detail__next-time">
+            <%= next_departure.departure_time.strftime("%H:%M") %>
+          </p>
+
+          <p class="usual-route-detail__next-countdown">
+            あと<%= minutes_until_departure %>分
+          </p>
+
+          <% if next_departure.note.present? %>
+            <p class="usual-route-detail__next-note">
+              <%= next_departure.note %>
+            </p>
+          <% end %>
+
+        <% elsif tomorrow_departure.present? %>
+          <p class="usual-route-detail__next-status">
+            本日の便は終了しました
+          </p>
+
+          <p class="usual-route-detail__next-caption">
+            明日の最初の便
+          </p>
+
+          <p class="usual-route-detail__next-time">
+            <%= tomorrow_departure.departure_time.strftime("%H:%M") %>
+          </p>
+
+          <% if tomorrow_departure.note.present? %>
+            <p class="usual-route-detail__next-note">
+              <%= tomorrow_departure.note %>
+            </p>
+          <% end %>
+
+        <% else %>
+          <p class="usual-route-detail__next-status">
+            本日の便は終了しました
+          </p>
+
+          <p class="usual-route-detail__next-status">
+            明日の便は登録されていません
+          </p>
+        <% end %>
+      </div>
+    </section>
+
     <div class="usual-route-detail__actions">
       <%= link_to "時刻表を見る",
                   usual_route_timetables_path(@usual_route),

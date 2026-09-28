@@ -12,6 +12,7 @@ class UsualRoutesController < ApplicationController
   end
 
   def show
+    @route_departure = RouteDepartureFinder.new(@usual_route).call
   end
 
   def edit

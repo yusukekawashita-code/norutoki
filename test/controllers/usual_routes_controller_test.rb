@@ -669,4 +669,125 @@ class UsualRoutesControllerTest < ActionDispatch::IntegrationTest
 
     assert_equal "", UsualRoute.last.note
   end
+
+  test "ルート詳細画面に現在時刻から次の便と残り時間が表示される" do
+    user = users(:one)
+    usual_route = usual_routes(:one)
+
+    usual_route.timetables.destroy_all
+
+    timetable = usual_route.timetables.create!(
+      day_type: Timetable::DAY_TYPES[:weekday]
+    )
+    timetable.departures.create!(
+      departure_time: "08:10",
+      note: "快速"
+    )
+
+    post session_path, params: {
+      email: user.email,
+      password: "password"
+    }
+
+    travel_to Time.zone.local(2026, 9, 25, 8, 0, 0) do
+      get usual_route_path(usual_route)
+
+      assert_response :success
+      assert_select ".usual-route-detail__next-title", text: "次の便"
+      assert_select ".usual-route-detail__next-caption", text: "次の出発"
+      assert_select ".usual-route-detail__next-time", text: "08:10"
+      assert_select ".usual-route-detail__next-countdown", text: "あと10分"
+      assert_select ".usual-route-detail__next-note", text: "快速"
+    end
+  end
+
+  test "本日の便が終了している場合はルート詳細画面に翌日の最初の便が表示される" do
+    user = users(:one)
+    usual_route = usual_routes(:one)
+
+    usual_route.timetables.destroy_all
+
+    weekday_timetable = usual_route.timetables.create!(
+      day_type: Timetable::DAY_TYPES[:weekday]
+    )
+    weekday_timetable.departures.create!(
+      departure_time: "08:10"
+    )
+
+    saturday_timetable = usual_route.timetables.create!(
+      day_type: Timetable::DAY_TYPES[:saturday]
+    )
+    saturday_timetable.departures.create!(
+      departure_time: "07:00",
+      note: "土曜始発"
+    )
+
+    post session_path, params: {
+      email: user.email,
+      password: "password"
+    }
+
+    travel_to Time.zone.local(2026, 9, 25, 9, 0, 0) do
+      get usual_route_path(usual_route)
+
+      assert_response :success
+      assert_select ".usual-route-detail__next-status",
+                    text: "本日の便は終了しました"
+      assert_select ".usual-route-detail__next-caption",
+                    text: "明日の最初の便"
+      assert_select ".usual-route-detail__next-time", text: "07:00"
+      assert_select ".usual-route-detail__next-note", text: "土曜始発"
+      assert_select ".usual-route-detail__next-countdown", count: 0
+    end
+  end
+
+  test "翌日の便も登録されていない場合はルート詳細画面に案内が表示される" do
+    user = users(:one)
+    usual_route = usual_routes(:one)
+
+    usual_route.timetables.destroy_all
+
+    timetable = usual_route.timetables.create!(
+      day_type: Timetable::DAY_TYPES[:weekday]
+    )
+    timetable.departures.create!(
+      departure_time: "08:10"
+    )
+
+    post session_path, params: {
+      email: user.email,
+      password: "password"
+    }
+
+    travel_to Time.zone.local(2026, 9, 25, 9, 0, 0) do
+      get usual_route_path(usual_route)
+
+      assert_response :success
+      assert_select ".usual-route-detail__next-status",
+                    text: "本日の便は終了しました"
+      assert_select ".usual-route-detail__next-status",
+                    text: "明日の便は登録されていません"
+      assert_select ".usual-route-detail__next-time", count: 0
+    end
+  end
+
+  test "時刻表未登録の場合はルート詳細画面に登録案内が表示される" do
+    user = users(:one)
+    usual_route = usual_routes(:one)
+
+    usual_route.timetables.destroy_all
+
+    post session_path, params: {
+      email: user.email,
+      password: "password"
+    }
+
+    get usual_route_path(usual_route)
+
+    assert_response :success
+    assert_select ".usual-route-detail__next-status",
+                  text: "時刻表が登録されていません"
+    assert_select "a[href='#{new_usual_route_timetable_path(usual_route)}']",
+                  text: "時刻表を登録する"
+  end
 end
