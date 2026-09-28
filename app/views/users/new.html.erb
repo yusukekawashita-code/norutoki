@@ -1,37 +1,75 @@
-<h1>ユーザー登録</h1>
+<main class="auth-page">
+  <div class="auth-page__inner">
+    <div class="auth-page__header">
+      <p class="auth-page__label">SIGN UP</p>
+      <h1 class="auth-page__title">ユーザー登録</h1>
+      <p class="auth-page__description">
+        Norutokiをはじめるためのアカウントを作成します。
+      </p>
+    </div>
 
-<% if @user.errors.any? %>
-  <div>
-    <ul>
-      <% @user.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
+    <div class="auth-page__card">
+      <% if @user.errors.any? %>
+        <div class="auth-form__errors">
+          <p class="auth-form__errors-title">
+            入力内容をご確認ください
+          </p>
+
+          <ul class="auth-form__errors-list">
+            <% @user.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
       <% end %>
-    </ul>
-  </div>
-<% end %>
 
-<%= form_with model: @user do |form| %>
-  <div>
-    <label for="user_name">名前</label>
-    <%= form.text_field :name %>
-  </div>
+      <%= form_with model: @user, class: "auth-form" do |form| %>
+        <div class="auth-form__field">
+          <%= form.label :name, "名前", class: "auth-form__label" %>
+          <%= form.text_field :name,
+                              class: "auth-form__input",
+                              autocomplete: "name",
+                              placeholder: "山田 太郎" %>
+        </div>
 
-  <div>
-    <label for="user_email">メールアドレス</label>
-    <%= form.email_field :email %>
-  </div>
+        <div class="auth-form__field">
+          <%= form.label :email, "メールアドレス", class: "auth-form__label" %>
+          <%= form.email_field :email,
+                               class: "auth-form__input",
+                               autocomplete: "email",
+                               placeholder: "example@example.com" %>
+        </div>
 
-  <div>
-    <label for="user_password">パスワード</label>
-    <%= form.password_field :password %>
-  </div>
+        <div class="auth-form__field">
+          <%= form.label :password, "パスワード", class: "auth-form__label" %>
+          <%= form.password_field :password,
+                                  class: "auth-form__input",
+                                  autocomplete: "new-password" %>
+        </div>
 
-  <div>
-    <label for="user_password_confirmation">パスワード確認</label>
-    <%= form.password_field :password_confirmation %>
-  </div>
+        <div class="auth-form__field">
+          <%= form.label :password_confirmation,
+                         "パスワード確認",
+                         class: "auth-form__label" %>
+          <%= form.password_field :password_confirmation,
+                                  class: "auth-form__input",
+                                  autocomplete: "new-password" %>
+        </div>
 
-  <div>
-    <%= form.submit "登録" %>
+        <div class="auth-form__actions">
+          <%= form.submit "登録する", class: "auth-form__submit" %>
+        </div>
+      <% end %>
+
+      <div class="auth-page__register">
+        <p class="auth-page__register-text">
+          すでにアカウントをお持ちの方
+        </p>
+
+        <%= link_to "ログイン",
+                    new_session_path,
+                    class: "auth-page__register-link" %>
+      </div>
+    </div>
   </div>
-<% end %>
+</main>

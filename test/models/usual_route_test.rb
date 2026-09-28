@@ -80,6 +80,6 @@ class UsualRouteTest < ActiveSupport::TestCase
     route.direction = 2
 
     assert_not route.valid?
-    assert_includes route.errors[:direction], "is not included in the list"
+    assert_includes route.errors[:direction], "は一覧にありません"
   end
 end
