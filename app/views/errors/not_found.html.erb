@@ -1,0 +1,18 @@
+<main class="error-page">
+  <div class="error-page__inner">
+    <p class="error-page__code">404</p>
+
+    <h1 class="error-page__title">
+      ページが見つかりませんでした
+    </h1>
+
+    <p class="error-page__text">
+      お探しのページは削除されたか、<br class="sp-only">
+      URLが変更された可能性があります。
+    </p>
+
+    <%= link_to "トップページへ戻る",
+                root_path,
+                class: "error-page__link" %>
+  </div>
+</main>
