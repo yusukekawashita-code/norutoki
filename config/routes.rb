@@ -17,4 +17,5 @@ Rails.application.routes.draw do
 
   get "my_page", to: "my_page#show"
   get "next_departures", to: "next_departures#index"
+  match "*path", to: "errors#not_found", via: :all
 end

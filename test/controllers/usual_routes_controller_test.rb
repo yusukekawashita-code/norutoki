@@ -209,6 +209,7 @@ class UsualRoutesControllerTest < ActionDispatch::IntegrationTest
     get usual_route_path(other_user_route)
 
     assert_response :not_found
+    assert_select ".error-page__title", text: "ページが見つかりませんでした"
   end
 
   test "未ログインユーザーはルート詳細画面にアクセスできない" do

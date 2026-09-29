@@ -5,6 +5,8 @@ class ApplicationController < ActionController::Base
   # Changes to the importmap will invalidate the etag for HTML responses
   stale_when_importmap_changes
 
+  rescue_from ActiveRecord::RecordNotFound, with: :render_not_found
+
   helper_method :current_user
 
   private
@@ -17,5 +19,9 @@ class ApplicationController < ActionController::Base
     return if current_user
 
     redirect_to new_session_path, alert: "ログインしてください"
+  end
+
+  def render_not_found
+    render "errors/not_found", status: :not_found
   end
 end
