@@ -14,6 +14,11 @@ class UserFlowsTest < ApplicationSystemTestCase
     fill_in "パスワード", with: "password"
     fill_in "パスワード確認", with: "password"
 
+    assert_field "名前", with: "システムテスト太郎"
+    assert_field "メールアドレス", with: "system-test@example.com"
+    assert_field "パスワード", with: "password"
+    assert_field "パスワード確認", with: "password"
+
     click_button "登録する"
 
     assert_text "ユーザー登録が完了しました"
