@@ -26,3 +26,5 @@ tmp/pids/*
 
 # macOS
 .DS_Store
+
+/coverage/
