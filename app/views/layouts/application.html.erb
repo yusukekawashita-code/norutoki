@@ -1,8 +1,32 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Norutoki</title>
+    <title>Norutoki | いつもの移動を、検索しない。</title>
+
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta
+      name="description"
+      content="Norutokiは、いつものバス移動と時刻表を登録しておくことで、現在時刻から次に利用できる便をすぐ確認できるWebアプリです。"
+    >
+
+    <% ogp_title = "Norutoki | いつもの移動を、検索しない。" %>
+    <% ogp_description = "いつものバス移動と時刻表を登録して、現在時刻から次に利用できる便をすぐ確認できるWebアプリです。" %>
+    <% ogp_url = "https://norutoki.onrender.com" %>
+    <% ogp_image = image_url("ogp.png", host: ogp_url) %>
+
+    <meta property="og:title" content="<%= ogp_title %>">
+    <meta property="og:description" content="<%= ogp_description %>">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="<%= ogp_url %>">
+    <meta property="og:image" content="<%= ogp_image %>">
+    <meta property="og:site_name" content="Norutoki">
+    <meta property="og:locale" content="ja_JP">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="<%= ogp_title %>">
+    <meta name="twitter:description" content="<%= ogp_description %>">
+    <meta name="twitter:image" content="<%= ogp_image %>">
+
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
