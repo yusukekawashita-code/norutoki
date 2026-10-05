@@ -1,6 +1,6 @@
 class UsualRoutesController < ApplicationController
   before_action :require_login
-  before_action :set_usual_route, only: %i[show edit update destroy move_up move_down toggle_favorite]
+  before_action :set_usual_route, only: %i[edit update destroy move_up move_down toggle_favorite]
 
   def index
     @direction = params[:direction]
@@ -12,6 +12,10 @@ class UsualRoutesController < ApplicationController
   end
 
   def show
+    @usual_route = current_user.usual_routes
+                                .includes(timetables: :departures)
+                                .find(params[:id])
+
     @route_departure = RouteDepartureFinder.new(@usual_route).call
   end
 
