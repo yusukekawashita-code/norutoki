@@ -2756,6 +2756,5 @@ a:focus-visible, button:focus-visible, input[type="submit"]:focus-visible { outl
     text-align: center;
     -webkit-appearance: none;
     appearance: none;
-    transform: translateY(2px);
   }
 }
