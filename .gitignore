@@ -28,3 +28,4 @@ tmp/pids/*
 .DS_Store
 
 /coverage/
+norutoki_render_backup.dump
