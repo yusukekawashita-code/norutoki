@@ -2738,6 +2738,7 @@ a:focus-visible, button:focus-visible, input[type="submit"]:focus-visible { outl
 
   input[type="time"].timetable-form__time::-webkit-date-and-time-value {
     min-width: 0;
-    text-align: left;
+    text-align: center;
+    line-height: 50px;
   }
 }
