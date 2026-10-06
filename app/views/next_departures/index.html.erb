@@ -90,7 +90,7 @@
                 </p>
                 
                 <p class="next-departures__countdown">
-                  あと<%= minutes_until_departure %>分
+                  <%= format_minutes_until_departure(minutes_until_departure) %>
                 </p>
 
                 <% if next_departure.note.present? %>

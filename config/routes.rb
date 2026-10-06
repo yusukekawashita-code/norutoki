@@ -12,7 +12,7 @@ Rails.application.routes.draw do
       patch :toggle_favorite
     end
 
-    resources :timetables, only: %i[index new create edit update]
+    resources :timetables, only: %i[index new create edit update destroy]
   end
 
   get "my_page", to: "my_page#show"

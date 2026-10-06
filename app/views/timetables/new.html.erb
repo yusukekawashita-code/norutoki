@@ -11,6 +11,18 @@
       </p>
     </div>
 
+    <% if @available_day_types.empty? %>
+      <div class="timetable-new__complete">
+        <p class="timetable-new__complete-message">
+          平日・土曜・日曜祝日の時刻表はすべて登録済みです。
+        </p>
+
+        <%= link_to "時刻表一覧へ戻る",
+                    usual_route_timetables_path(@usual_route),
+                    class: "timetable-form__back" %>
+      </div>
+    <% else %>
+
     <%= form_with model: [@usual_route, @timetable], class: "timetable-form" do |form| %>
       <% if @timetable.errors.any? %>
         <div class="timetable-form__errors">
@@ -27,7 +39,7 @@
       <div class="timetable-form__field">
         <%= form.label :day_type, "曜日区分", class: "timetable-form__label" %>
         <%= form.select :day_type,
-                        [["平日", 0], ["土曜", 1], ["日曜祝日", 2]],
+                        @available_day_types,
                         { prompt: "選択してください" },
                         class: "timetable-form__select" %>
       </div>
@@ -35,21 +47,77 @@
       <div class="timetable-form__departures">
         <p class="timetable-form__label">出発時刻</p>
 
-        <%= form.fields_for :departures do |departure_form| %>
-          <div class="timetable-form__departure">
+        <div data-departures-container>
+          <%= form.fields_for :departures do |departure_form| %>
+            <div class="timetable-form__departure" data-departure>
+              <div class="timetable-form__field">
+                <%= departure_form.label :departure_time,
+                                        "出発時刻",
+                                        class: "timetable-form__sub-label" %>
+
+                <%= departure_form.time_field :departure_time,
+                                              class: "timetable-form__time" %>
+              </div>
+
+              <div class="timetable-form__field">
+                <%= departure_form.label :note,
+                                        "メモ",
+                                        class: "timetable-form__sub-label" %>
+
+                <%= departure_form.text_field :note,
+                                              placeholder: "例：快速",
+                                              class: "timetable-form__input" %>
+              </div>
+
+              <button type="button"
+                      class="timetable-form__remove"
+                      data-remove-departure>
+                この時刻を削除
+              </button>
+            </div>
+          <% end %>
+        </div>
+
+        <button type="button"
+                class="timetable-form__add"
+                data-add-departure>
+          ＋ 時刻を追加
+        </button>
+
+        <template data-departure-template>
+          <div class="timetable-form__departure" data-departure>
             <div class="timetable-form__field">
-              <%= departure_form.label :departure_time, "出発時刻", class: "timetable-form__sub-label" %>
-              <%= departure_form.time_field :departure_time, class: "timetable-form__time" %>
+              <label class="timetable-form__sub-label"
+                    for="timetable_departures_attributes_NEW_RECORD_departure_time">
+                出発時刻
+              </label>
+
+              <input type="time"
+                    name="timetable[departures_attributes][NEW_RECORD][departure_time]"
+                    id="timetable_departures_attributes_NEW_RECORD_departure_time"
+                    class="timetable-form__time">
             </div>
 
             <div class="timetable-form__field">
-              <%= departure_form.label :note, "メモ", class: "timetable-form__sub-label" %>
-              <%= departure_form.text_field :note,
-                                            placeholder: "例：快速",
-                                            class: "timetable-form__input" %>
+              <label class="timetable-form__sub-label"
+                    for="timetable_departures_attributes_NEW_RECORD_note">
+                メモ
+              </label>
+
+              <input type="text"
+                    name="timetable[departures_attributes][NEW_RECORD][note]"
+                    id="timetable_departures_attributes_NEW_RECORD_note"
+                    placeholder="例：快速"
+                    class="timetable-form__input">
             </div>
+
+            <button type="button"
+                    class="timetable-form__remove"
+                    data-remove-departure>
+              この時刻を削除
+            </button>
           </div>
-        <% end %>
+        </template>
       </div>
 
       <div class="timetable-form__actions">
@@ -60,5 +128,6 @@
                     class: "timetable-form__back" %>
       </div>
     <% end %>
+  <% end %>
   </div>
 </main>

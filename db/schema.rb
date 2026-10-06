@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_27_180939) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_06_010349) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -28,6 +28,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_27_180939) do
     t.integer "day_type", null: false
     t.datetime "updated_at", null: false
     t.bigint "usual_route_id", null: false
+    t.index ["usual_route_id", "day_type"], name: "index_timetables_on_route_and_day_type", unique: true
     t.index ["usual_route_id"], name: "index_timetables_on_usual_route_id"
   end
 

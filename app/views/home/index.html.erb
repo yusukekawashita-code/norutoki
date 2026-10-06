@@ -13,7 +13,13 @@
         次に乗れる便をすぐに確認できるサービスです。
       </p>
 
-      <% unless current_user %>
+      <% if current_user %>
+        <div class="top-hero__actions">
+          <%= link_to "マイページへ",
+                      my_page_path,
+                      class: "top-hero__button" %>
+        </div>
+      <% else %>
         <div class="top-hero__actions">
           <%= link_to "はじめて使う方",
                       new_user_path,
@@ -79,7 +85,7 @@
                     </p>
 
                     <p class="top-next-departures__countdown">
-                      あと<%= minutes_until_departure %>分
+                      <%= format_minutes_until_departure(minutes_until_departure) %>
                     </p>
 
                   <% elsif tomorrow_departure.present? %>

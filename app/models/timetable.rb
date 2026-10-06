@@ -15,7 +15,8 @@ class Timetable < ApplicationRecord
 
   validates :day_type,
             presence: true,
-            inclusion: { in: DAY_TYPES.values }
+            inclusion: { in: DAY_TYPES.values },
+            uniqueness: { scope: :usual_route_id }
 
   def next_departure(current_time = Time.current)
     current_seconds = seconds_since_midnight(current_time)

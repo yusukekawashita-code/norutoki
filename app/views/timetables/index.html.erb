@@ -36,9 +36,21 @@
                     }[timetable.day_type] %>
               </h2>
 
-              <%= link_to "編集する",
-                          edit_usual_route_timetable_path(@usual_route, timetable),
-                          class: "timetable-index__edit-link" %>
+              <div class="timetable-index__card-actions">
+                <%= link_to "編集する",
+                            edit_usual_route_timetable_path(@usual_route, timetable),
+                            class: "timetable-index__edit-link" %>
+
+                <%= button_to "削除する",
+                              usual_route_timetable_path(@usual_route, timetable),
+                              method: :delete,
+                              class: "timetable-index__delete-button",
+                              form: {
+                                data: {
+                                  turbo_confirm: "この時刻表を削除しますか？"
+                                }
+                              } %>
+              </div>
             </div>
 
             <% if timetable.departures.any? %>
