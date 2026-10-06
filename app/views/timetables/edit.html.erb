@@ -54,8 +54,10 @@
                                          "出発時刻",
                                          class: "timetable-form__sub-label" %>
 
-                <%= departure_form.time_field :departure_time,
-                                              class: "timetable-form__time" %>
+                <div class="timetable-form__time-wrapper">
+                  <%= departure_form.time_field :departure_time,
+                                                class: "timetable-form__time" %>
+                </div>
               </div>
 
               <div class="timetable-form__field">
@@ -91,10 +93,12 @@
                 出発時刻
               </label>
 
-              <input type="time"
-                     name="timetable[departures_attributes][NEW_RECORD][departure_time]"
-                     id="timetable_departures_attributes_NEW_RECORD_departure_time"
-                     class="timetable-form__time">
+              <div class="timetable-form__time-wrapper">
+                <input type="time"
+                       name="timetable[departures_attributes][NEW_RECORD][departure_time]"
+                       id="timetable_departures_attributes_NEW_RECORD_departure_time"
+                       class="timetable-form__time">
+              </div>
             </div>
 
             <div class="timetable-form__field">
