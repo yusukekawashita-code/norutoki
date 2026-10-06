@@ -2758,3 +2758,10 @@ a:focus-visible, button:focus-visible, input[type="submit"]:focus-visible { outl
     appearance: none;
   }
 }
+
+/* Adjust iOS Safari time text vertical position */
+@media (max-width: 767px) {
+  input[type="time"].timetable-form__time::-webkit-date-and-time-value {
+    transform: translateY(2px);
+  }
+}
