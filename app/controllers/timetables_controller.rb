@@ -69,9 +69,9 @@ class TimetablesController < ApplicationController
     registered_day_types = @usual_route.timetables.pluck(:day_type)
 
     [
-      ["平日", 0],
-      ["土曜", 1],
-      ["日曜祝日", 2]
+      [ "平日", 0 ],
+      [ "土曜", 1 ],
+      [ "日曜祝日", 2 ]
     ].reject { |(_, value)| registered_day_types.include?(value) }
   end
 end
