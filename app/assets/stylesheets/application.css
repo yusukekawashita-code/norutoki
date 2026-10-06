@@ -2721,23 +2721,27 @@ a:focus-visible, button:focus-visible, input[type="submit"]:focus-visible { outl
 
 /* Prevent iOS Safari time input overflow */
 @media (max-width: 767px) {
+  .timetable-form,
+  .timetable-form__departures,
+  [data-departures-container],
   .timetable-form__departure,
   .timetable-form__field {
     min-width: 0;
-    width: 100%;
     max-width: 100%;
+  }
+
+  .timetable-form__departure {
+    width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
   }
 
   input[type="time"].timetable-form__time {
     display: block;
     width: 100%;
-    min-width: 0;
     max-width: 100%;
-    box-sizing: border-box;
-  }
-
-  input[type="time"].timetable-form__time::-webkit-date-and-time-value {
     min-width: 0;
-    text-align: left;
+    box-sizing: border-box;
+    text-align: center;
   }
 }
