@@ -1,35 +1,41 @@
 <main>
   <section class="top-hero">
     <div class="top-hero__inner">
-      <p class="top-hero__service-name">Norutoki</p>
+      <p class="top-hero__service-name visually-hidden">Norutoki</p>
 
-      <h1 class="top-hero__title">
+      <h1 class="top-hero__title visually-hidden">
         いつもの移動を、<br>
         検索しない。
       </h1>
 
-      <p class="top-hero__description">
-        Norutokiは、いつも利用するバスの時刻を登録しておくことで、<br>
-        次に乗れる便をすぐに確認できるサービスです。
-      </p>
+      <div class="top-hero__visual">
+        <%= image_tag "hero-bus.png", class: "top-hero__image", alt: "緑のバスが、街と自然に囲まれたバス停へ向かうイラスト", width: 1672, height: 941, fetchpriority: "high" %>
+      </div>
 
-      <% if current_user %>
-        <div class="top-hero__actions">
-          <%= link_to "マイページへ",
-                      my_page_path,
-                      class: "top-hero__button" %>
-        </div>
-      <% else %>
-        <div class="top-hero__actions">
-          <%= link_to "はじめて使う方",
-                      new_user_path,
-                      class: "top-hero__button" %>
+      <div class="top-hero__content">
+        <p class="top-hero__description">
+          Norutokiは、いつも利用するバスの時刻を登録しておくことで、<br>
+          次に乗れる便をすぐに確認できるサービスです。
+        </p>
 
-          <%= link_to "ログイン",
-                      new_session_path,
-                      class: "top-hero__login" %>
-        </div>
-      <% end %>
+        <% if current_user %>
+          <div class="top-hero__actions">
+            <%= link_to "マイページへ",
+                        my_page_path,
+                        class: "top-hero__button" %>
+          </div>
+        <% else %>
+          <div class="top-hero__actions">
+            <%= link_to "はじめて使う方",
+                        new_user_path,
+                        class: "top-hero__button" %>
+
+            <%= link_to "ログイン",
+                        new_session_path,
+                        class: "top-hero__login" %>
+          </div>
+        <% end %>
+      </div>
     </div>
   </section>
 

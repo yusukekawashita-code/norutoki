@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="ja">
   <head>
     <title>Norutoki | いつもの移動を、検索しない。</title>
 
@@ -39,7 +39,7 @@
       <div class="header__inner">
         <%= link_to "Norutoki", root_path, class: "header__logo" %>
 
-        <nav class="header__nav">
+        <nav class="header__nav" aria-label="アカウント">
           <% if current_user %>
             <span class="header__user-name">
               <%= current_user.name %>さん

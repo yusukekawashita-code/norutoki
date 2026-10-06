@@ -26,7 +26,7 @@
     <% if @timetables.any? %>
       <div class="timetable-index__list">
         <% @timetables.each do |timetable| %>
-          <section class="timetable-index__card">
+          <section class="timetable-index__card timetable-index__card--day-<%= timetable.day_type %>">
             <div class="timetable-index__card-header">
               <h2 class="timetable-index__day-type">
                 <%= {

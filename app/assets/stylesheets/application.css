@@ -2432,3 +2432,279 @@ body {
     width: 100%;
   }
 }
+
+/* ========================================
+   Norutoki — fresh green visual theme
+   Existing BEM hooks and behavior remain unchanged.
+======================================== */
+:root {
+  --color-primary: #38b76b;
+  --color-primary-dark: #187a45;
+  --color-primary-light: #eaf8ef;
+  --color-background: #f8fbf8;
+  --color-surface: #fff;
+  --color-text: #202522;
+  --color-text-sub: #66706a;
+  --color-accent: #ffd85a;
+  --color-danger: #dc2626;
+  --color-border: #dce8df;
+  /* White button text needs a deeper green than the illustration accent. */
+  --color-action: #21834b;
+  --radius-card: 20px;
+  --radius-control: 12px;
+  --shadow-card: 0 6px 24px rgb(26 78 46 / 5%);
+  --shadow-hover: 0 10px 28px rgb(26 78 46 / 10%);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+body {
+  color: var(--color-text);
+  background: var(--color-background);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Kaku Gothic ProN", "Noto Sans JP", Meiryo, sans-serif;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+a { color: var(--color-primary-dark); text-underline-offset: 4px; }
+button, input, select, textarea { font-family: inherit; }
+button, input[type="submit"] { cursor: pointer; }
+form.button_to { margin: 0; }
+main { min-width: 0; }
+:focus-visible {
+  outline: 3px solid var(--color-primary-dark);
+  outline-offset: 4px;
+}
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.header { border-color: var(--color-border); box-shadow: 0 2px 12px rgb(26 78 46 / 3%); }
+.header__inner { max-width: 1120px; gap: 16px; }
+.header__logo { color: var(--color-primary-dark); font-size: 26px; letter-spacing: -1px; }
+.header__nav { gap: 20px; min-width: 0; }
+.header__user-name { color: var(--color-text-sub); }
+.header__link { display: inline-flex; align-items: center; min-height: 44px; color: var(--color-primary-dark); }
+.header__login, .header__logout { min-height: 44px; border-color: var(--color-border); border-radius: 999px; color: var(--color-primary-dark); line-height: 1.4; }
+
+/* Full illustration: preserve both the lettering and the bus at every width. */
+.top-hero { padding: 32px 24px 48px; background: var(--color-background); }
+.top-hero__inner { max-width: 1072px; }
+.top-hero__visual { overflow: hidden; border-radius: 28px; background: #edf9f4; box-shadow: var(--shadow-card); }
+.top-hero__image { display: block; width: 100%; height: auto; aspect-ratio: 1672 / 941; object-fit: contain; object-position: center; }
+.top-hero__content { display: flex; align-items: center; justify-content: space-between; gap: 28px; padding: 28px 8px 0; }
+.top-hero__description { margin: 0; color: var(--color-text-sub); font-size: 15px; line-height: 1.9; }
+.top-hero__description br { display: none; }
+.top-hero__actions { flex-shrink: 0; gap: 12px; margin: 0; }
+.top-hero__button, .top-hero__login { min-width: 148px; min-height: 52px; padding: 12px 20px; }
+.top-about { padding: 64px 24px 80px; background: var(--color-surface); border-top: 1px solid var(--color-border); }
+.top-about__inner { max-width: 960px; padding-left: 28px; border-left: 4px solid var(--color-primary); }
+.top-about__title { font-size: clamp(24px, 3vw, 32px); margin-bottom: 24px; }
+.top-about__description { color: var(--color-text-sub); font-size: 16px; }
+
+.my-page, .usual-routes, .usual-route-detail, .usual-route-edit,
+.timetable-new, .timetable-edit, .timetable-index, .next-departures, .auth-page, .error-page {
+  background: var(--color-background);
+  padding-top: 52px;
+}
+.my-page__header, .usual-routes__header, .usual-route-detail__header, .usual-route-edit__header { margin-bottom: 32px; }
+.my-page__title, .usual-routes__title, .usual-route-detail__title, .usual-route-edit__title,
+.timetable-new__title, .timetable-edit__title, .timetable-index__title, .next-departures__title, .auth-page__title {
+  font-size: clamp(28px, 4vw, 36px); letter-spacing: .01em;
+}
+.my-page__label, .usual-routes__label, .usual-route-detail__label, .usual-route-edit__label,
+.timetable-index__label, .next-departures__label, .auth-page__label,
+.top-next-departures__label, .usual-route-detail__next-label {
+  color: var(--color-primary-dark); font-size: 12px; letter-spacing: .16em;
+}
+.my-page__label::before, .usual-routes__label::before, .usual-route-detail__label::before,
+.usual-route-edit__label::before, .timetable-index__label::before, .next-departures__label::before,
+.auth-page__label::before, .top-next-departures__label::before, .usual-route-detail__next-label::before {
+  content: ""; display: inline-block; width: 8px; height: 8px; margin-right: 9px;
+  border-radius: 50%; background: var(--color-primary);
+}
+
+/* Surfaces follow existing information groups. */
+.my-page__user-card, .my-page__empty, .my-page__route-item,
+.usual-routes__card, .usual-routes__empty, .usual-route-detail__card, .usual-route-detail__next-card,
+.usual-route-edit__form, .timetable-form, .timetable-new__route, .timetable-edit__route,
+.timetable-index__route, .timetable-index__card, .timetable-index__empty,
+.next-departures__card, .next-departures__empty, .top-next-departures__card,
+.top-next-departures__empty, .auth-page__card, .error-page__inner, .timetable-new__complete {
+  background: var(--color-surface); border: 1px solid var(--color-border);
+  border-radius: var(--radius-card); box-shadow: var(--shadow-card);
+}
+.my-page__user-item, .usual-route-detail__item, .timetable-index__card-header, .timetable-index__departure { border-color: var(--color-border); }
+.my-page__user-item dt, .usual-route-detail__item-label { color: var(--color-text-sub); }
+.my-page__route-item { border-left: 4px solid var(--color-primary); }
+.my-page__route-name { font-size: 20px; }
+.my-page__route-path { font-size: 15px; }
+.usual-routes__card { border-left: 4px solid var(--color-primary); }
+.usual-routes__name { margin-bottom: 12px; }
+.usual-routes__name-link { color: var(--color-text); text-decoration: none; }
+.usual-routes__name-link:hover { color: var(--color-primary-dark); text-decoration: underline; }
+.usual-routes__places { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); padding-top: 12px; }
+.usual-routes__places > span { min-width: 0; }
+.usual-routes__arrow, .top-next-departures__route-path span, .next-departures__route-path span { color: var(--color-primary-dark); font-weight: 700; }
+.usual-routes__arrow { display: grid; place-items: center; width: 32px; height: 32px; background: var(--color-primary-light); border-radius: 50%; }
+.usual-routes__direction, .next-departures__direction, .top-next-departures__direction {
+  display: inline-flex; width: fit-content; align-items: center; flex-shrink: 0;
+  margin: 0 0 12px; padding: 5px 12px; min-height: 28px; border-radius: 999px;
+  background: var(--color-primary-light); color: var(--color-primary-dark); font-size: 12px; font-weight: 700; line-height: 1.5;
+}
+.next-departures__direction { margin-top: 12px; margin-bottom: 0; }
+.top-next-departures__direction { margin: 0; }
+.usual-routes__filters { border-color: var(--color-border); border-radius: 14px; }
+.usual-routes__filter { min-height: 44px; border-radius: 10px; }
+.usual-routes__filter.is-active { background: var(--color-primary-dark); }
+.usual-routes__favorite-button { min-height: 44px; border-color: var(--color-border); line-height: 1.4; }
+.usual-routes__favorite-button.is-favorite, .next-departures__favorite { background: #fff6d4; color: #795600; border-color: var(--color-accent); }
+.next-departures__favorite { line-height: 1.5; }
+.usual-routes__order-button { border-color: var(--color-border); color: var(--color-primary-dark); border-radius: var(--radius-control); }
+
+/* Next departure is the strongest information after the hero. */
+.top-next-departures { padding: 48px 24px 64px; background: var(--color-primary-light); border-top: 1px solid #d6ecde; }
+.top-next-departures__title { font-size: clamp(26px, 3.5vw, 32px); }
+.top-next-departures__card, .next-departures__card { border-top: 3px solid var(--color-primary); }
+.top-next-departures__route-heading { flex-wrap: wrap; }
+.top-next-departures__route-name, .next-departures__route-name { font-size: 22px; }
+.top-next-departures__route-path, .next-departures__route-path { font-size: 16px; line-height: 1.9; }
+.top-next-departures__result, .next-departures__result { border-color: var(--color-border); }
+.top-next-departures__time, .next-departures__time, .usual-route-detail__next-time {
+  color: var(--color-primary-dark); font-size: clamp(48px, 6vw, 60px); line-height: 1.15;
+  letter-spacing: -.035em; font-variant-numeric: tabular-nums;
+}
+.top-next-departures__countdown, .next-departures__countdown, .usual-route-detail__next-countdown {
+  max-width: 100%; padding: 7px 16px; background: var(--color-accent); color: #493b0a; font-size: 19px;
+}
+.usual-route-detail__next-card { border-left: 4px solid var(--color-primary); }
+.usual-route-detail__actions { flex-wrap: wrap; gap: 12px; }
+
+/* Buttons: deeper green ensures legibility of white labels. */
+.top-hero__button, .top-hero__login, .usual-routes__new-link,
+.usual-route-detail__timetable-link, .usual-route-detail__edit-link, .usual-route-detail__next-link,
+.usual-route-detail__delete-button, .usual-route-detail__back-link, .usual-route-edit__submit, .usual-route-edit__cancel,
+.timetable-form__submit, .timetable-form__back, .timetable-form__add, .timetable-form__remove,
+.timetable-index__new-link, .timetable-index__edit-link, .timetable-index__delete-button, .timetable-index__back-link,
+.timetable-edit__delete-button, .next-departures__link, .next-departures__empty-link, .next-departures__back-link,
+.my-page__next-departures-link, .my-page__routes-link, .top-next-departures__link, .auth-form__submit, .error-page__link {
+  min-height: 48px; border-radius: var(--radius-control); line-height: 1.5;
+  border: 1px solid var(--color-primary-dark); background: var(--color-surface); color: var(--color-primary-dark);
+  text-align: center; padding-top: 10px; padding-bottom: 10px;
+}
+.top-hero__button, .usual-routes__new-link, .usual-route-detail__timetable-link:first-child,
+.usual-route-detail__next-link, .usual-route-edit__submit, .timetable-form__submit,
+.timetable-index__new-link, .next-departures__empty-link, .my-page__next-departures-link,
+.top-next-departures__link, .auth-form__submit, .error-page__link {
+  background: var(--color-action); border-color: var(--color-action); color: white;
+  box-shadow: 0 3px 8px rgb(24 122 69 / 12%);
+}
+.usual-route-detail__back-link, .usual-route-edit__cancel, .timetable-form__back,
+.timetable-index__back-link, .next-departures__back-link { border-color: var(--color-border); color: var(--color-text-sub); }
+.usual-route-detail__delete-button, .timetable-index__delete-button, .timetable-edit__delete-button, .timetable-form__remove {
+  border-color: var(--color-danger); color: var(--color-danger); background: var(--color-surface);
+}
+
+/* Form geometry also applies to rows inserted by the existing JS template. */
+.usual-route-edit__inner, .timetable-new__inner, .timetable-edit__inner { max-width: 800px; }
+.usual-route-edit__input, .timetable-form__select, .timetable-form__time, .timetable-form__input, .auth-form__input {
+  min-width: 0; max-width: 100%; min-height: 50px; border-radius: var(--radius-control);
+  border-color: #bccfc2; background: #fcfefc; color: var(--color-text); font-size: 16px;
+}
+textarea.usual-route-edit__input { height: auto; min-height: 128px; padding: 12px 14px; resize: vertical; }
+.usual-route-edit__input:focus, .timetable-form__select:focus, .timetable-form__time:focus,
+.timetable-form__input:focus, .auth-form__input:focus {
+  border-color: var(--color-primary); outline: 2px solid var(--color-primary-dark); outline-offset: 3px; box-shadow: none;
+}
+.timetable-form__departure { grid-template-columns: minmax(0, 160px) minmax(0, 1fr) auto; align-items: end; gap: 16px; border-color: var(--color-border); }
+.timetable-form__departure:first-of-type { border-color: var(--color-border); }
+.timetable-form__remove { margin-bottom: 1px; }
+.timetable-form__time { font-variant-numeric: tabular-nums; }
+.timetable-new__complete { padding: 24px; }
+.timetable-index__card { border-top: 4px solid var(--color-primary); }
+.timetable-index__day-type { display: inline-flex; padding: 6px 16px; border-radius: 999px; color: var(--color-primary-dark); background: var(--color-primary-light); font-size: 18px; }
+.timetable-index__card--day-1 { border-top-color: #4c85b0; }
+.timetable-index__card--day-1 .timetable-index__day-type { color: #285d86; background: #edf5fc; }
+.timetable-index__card--day-2 { border-top-color: #d79a49; }
+.timetable-index__card--day-2 .timetable-index__day-type { color: #885619; background: #fff5e6; }
+.timetable-index__card-actions { flex-wrap: wrap; }
+.timetable-index__time { min-width: 88px; color: var(--color-primary-dark); font-size: 26px; font-variant-numeric: tabular-nums; letter-spacing: -.02em; }
+.timetable-index__departure { padding: 16px 8px; }
+.timetable-index__departure:nth-child(even) { background: #f5faf6; }
+.auth-page__register-link { display: inline-flex; align-items: center; min-height: 44px; color: var(--color-primary-dark); }
+
+/* Interaction without new JavaScript. */
+a, button, input[type="submit"] { transition: background-color .18s ease, color .18s ease, border-color .18s ease, transform .18s ease, box-shadow .18s ease; }
+.usual-routes__card { transition: transform .2s ease, box-shadow .2s ease; }
+.top-hero__content { animation: norutoki-fade-up .5s ease-out both; }
+@keyframes norutoki-fade-up { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+@media (hover: hover) {
+  .usual-routes__card:hover { transform: translateY(-2px); box-shadow: var(--shadow-hover); }
+  a[class]:hover, button:hover, input[type="submit"]:hover { transform: translateY(-1px); }
+  .top-hero__login:hover, .header__login:hover, .header__logout:hover,
+  .usual-route-detail__timetable-link:hover, .usual-route-detail__edit-link:hover,
+  .my-page__routes-link:hover, .timetable-index__edit-link:hover, .timetable-form__add:hover, .next-departures__link:hover {
+    background: var(--color-primary-light); color: var(--color-primary-dark);
+  }
+  .top-hero__button:hover, .usual-routes__new-link:hover, .usual-route-detail__timetable-link:first-child:hover,
+  .usual-route-detail__next-link:hover, .usual-route-edit__submit:hover, .timetable-form__submit:hover,
+  .timetable-index__new-link:hover, .next-departures__empty-link:hover, .my-page__next-departures-link:hover,
+  .top-next-departures__link:hover, .auth-form__submit:hover, .error-page__link:hover {
+    background: var(--color-primary-dark); color: white; opacity: 1;
+  }
+}
+.usual-route-detail__delete-button:hover, .timetable-index__delete-button:hover,
+.timetable-edit__delete-button:hover, .timetable-form__remove:hover { background: var(--color-danger); color: white; }
+/* Override legacy component outlines while preserving keyboard focus. */
+a:focus-visible, button:focus-visible, input[type="submit"]:focus-visible { outline: 3px solid var(--color-primary-dark); outline-offset: 4px; }
+
+@media (max-width: 900px) {
+  .top-hero__content { flex-direction: column; text-align: center; gap: 20px; }
+  .top-hero__description { max-width: 560px; }
+  .timetable-form__departure { grid-template-columns: minmax(0, 140px) minmax(0, 1fr); }
+  .timetable-form__remove { grid-column: 2; justify-self: end; }
+}
+@media (max-width: 767px) {
+  .header__inner { padding: 10px 16px; min-height: 68px; flex-wrap: wrap; gap: 8px 12px; }
+  .header__logo { font-size: 23px; }
+  .header__nav { gap: 10px; }
+  .header__user-name { display: inline; max-width: 105px; font-size: 12px; }
+  .header__login, .header__logout { padding: 8px 12px; }
+  .top-hero { padding: 20px 16px 32px; }
+  .top-hero__visual { border-radius: 18px; }
+  .top-hero__content { padding: 20px 4px 0; text-align: left; align-items: stretch; }
+  .top-hero__actions { width: 100%; gap: 10px; }
+  .top-hero__button, .top-hero__login { min-height: 50px; }
+  .top-about { padding: 40px 20px 48px; }
+  .top-about__inner { padding-left: 18px; }
+  .top-about__description { font-size: 15px; }
+  .my-page, .usual-routes, .usual-route-detail, .usual-route-edit,
+  .timetable-new, .timetable-edit, .timetable-index, .next-departures, .auth-page, .error-page { padding: 32px 20px 56px; }
+  .top-next-departures { padding: 32px 20px 40px; }
+  .top-next-departures__card, .next-departures__card { padding: 24px 20px; gap: 20px; }
+  .top-next-departures__result, .next-departures__result { padding: 20px 0 0; }
+  .top-next-departures__time, .next-departures__time, .usual-route-detail__next-time { font-size: 52px; }
+  .top-next-departures__route-name, .next-departures__route-name { font-size: 20px; }
+  .my-page__route-actions, .usual-route-detail__actions { gap: 10px; }
+  .usual-routes__card-content { width: 100%; }
+  .usual-routes__filters { width: 100%; }
+  .usual-route-detail__actions > *, .usual-route-detail__actions button { width: 100%; }
+  .timetable-form__departure { grid-template-columns: minmax(0, 1fr); gap: 14px; }
+  .timetable-form__remove { grid-column: auto; justify-self: stretch; }
+  .timetable-index__card-header { flex-direction: column; align-items: stretch; gap: 16px; }
+  .timetable-index__day-type { align-self: flex-start; }
+  .timetable-index__card-actions > * { flex: 1; }
+  .timetable-index__card-actions button { width: 100%; }
+  .timetable-index__note { min-width: 0; }
+  .timetable-new__complete .timetable-form__back { width: 100%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+  a[class]:hover, button:hover, input[type="submit"]:hover, .usual-routes__card:hover { transform: none; }
+}
