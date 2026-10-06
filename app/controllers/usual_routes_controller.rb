@@ -12,9 +12,7 @@ class UsualRoutesController < ApplicationController
   end
 
   def show
-    @usual_route = current_user.usual_routes
-                                .includes(timetables: :departures)
-                                .find(params[:id])
+    @usual_route = current_user.usual_routes.find(params[:id])
 
     @route_departure = RouteDepartureFinder.new(@usual_route).call
   end

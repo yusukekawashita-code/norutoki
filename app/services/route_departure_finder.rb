@@ -39,8 +39,8 @@ class RouteDepartureFinder
   end
 
   def find_timetable(target_day_type)
-    usual_route.timetables.find do |timetable|
-      timetable.day_type == target_day_type
-    end
+    usual_route.timetables
+              .includes(:departures)
+              .find_by(day_type: target_day_type)
   end
 end

@@ -7,7 +7,6 @@ class UserRouteDeparturesFinder
   def call
     user.usual_routes
         .ordered
-        .includes(timetables: :departures)
         .map do |usual_route|
       RouteDepartureFinder.new(usual_route, current_time).call
     end
