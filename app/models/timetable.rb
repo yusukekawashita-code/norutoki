@@ -31,8 +31,8 @@ class Timetable < ApplicationRecord
   end
 
   def self.today_day_type(date = Time.zone.today)
+    return DAY_TYPES[:sunday_holiday] if date.sunday? || HolidayJp.holiday?(date)
     return DAY_TYPES[:saturday] if date.saturday?
-    return DAY_TYPES[:sunday_holiday] if date.sunday?
 
     DAY_TYPES[:weekday]
   end

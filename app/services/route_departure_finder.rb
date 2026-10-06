@@ -1,4 +1,6 @@
 class RouteDepartureFinder
+  SEARCH_DAYS = 7
+
   def initialize(usual_route, current_time = Time.current)
     @usual_route = usual_route
     @current_time = current_time
@@ -8,21 +10,17 @@ class RouteDepartureFinder
     timetable = find_timetable(day_type)
     next_departure = timetable&.next_departure(current_time)
 
-    tomorrow_timetable = nil
-    tomorrow_departure = nil
-
-    if timetable.present? && next_departure.nil?
-      tomorrow_timetable = find_timetable(tomorrow_day_type)
-      tomorrow_departure = tomorrow_timetable&.first_departure
-    end
+    next_service = find_next_service unless next_departure.present?
 
     {
       usual_route: usual_route,
+      timetable_registered: usual_route.timetables.exists?,
       timetable: timetable,
       next_departure: next_departure,
       minutes_until_departure: next_departure&.minutes_until_departure(current_time),
-      tomorrow_timetable: tomorrow_timetable,
-      tomorrow_departure: tomorrow_departure
+      next_service_date: next_service&.fetch(:date),
+      next_service_timetable: next_service&.fetch(:timetable),
+      next_service_departure: next_service&.fetch(:departure)
     }
   end
 
@@ -34,13 +32,27 @@ class RouteDepartureFinder
     Timetable.today_day_type(current_time.to_date)
   end
 
-  def tomorrow_day_type
-    Timetable.today_day_type(current_time.to_date.tomorrow)
+  def find_next_service
+    (1..SEARCH_DAYS).each do |days_ahead|
+      date = current_time.to_date + days_ahead.days
+      timetable = find_timetable(Timetable.today_day_type(date))
+      departure = timetable&.first_departure
+
+      next unless departure.present?
+
+      return {
+        date: date,
+        timetable: timetable,
+        departure: departure
+      }
+    end
+
+    nil
   end
 
   def find_timetable(target_day_type)
     usual_route.timetables
-              .includes(:departures)
-              .find_by(day_type: target_day_type)
+               .includes(:departures)
+               .find_by(day_type: target_day_type)
   end
 end

@@ -12,7 +12,6 @@
       <div class="next-departures__list">
         <% @route_departures.each do |route_departure| %>
           <% usual_route = route_departure[:usual_route] %>
-          <% timetable = route_departure[:timetable] %>
           <% next_departure = route_departure[:next_departure] %>
           <% minutes_until_departure = route_departure[:minutes_until_departure] %>
 
@@ -40,7 +39,7 @@
             </div>
 
             <div class="next-departures__result">
-              <% if timetable.nil? %>
+              <% if !route_departure[:timetable_registered] %>
                 <p class="next-departures__status">
                   時刻表が登録されていません
                 </p>
@@ -49,38 +48,7 @@
                             new_usual_route_timetable_path(usual_route),
                             class: "next-departures__link" %>
 
-                <% elsif next_departure.nil? %>
-                  <% tomorrow_departure = route_departure[:tomorrow_departure] %>
-
-                  <p class="next-departures__status">
-                    本日の便は終了しました
-                  </p>
-
-                  <% if tomorrow_departure.present? %>
-                    <p class="next-departures__next-label">
-                      明日の最初の便
-                    </p>
-
-                    <p class="next-departures__time">
-                      <%= tomorrow_departure.departure_time.strftime("%H:%M") %>
-                    </p>
-
-                    <% if tomorrow_departure.note.present? %>
-                      <p class="next-departures__note">
-                        <%= tomorrow_departure.note %>
-                      </p>
-                    <% end %>
-                  <% else %>
-                    <p class="next-departures__status">
-                      明日の便は登録されていません
-                    </p>
-                  <% end %>
-
-                  <%= link_to "時刻表を確認する",
-                              usual_route_timetables_path(usual_route),
-                              class: "next-departures__link" %>
-
-              <% else %>
+              <% elsif next_departure.present? %>
                 <p class="next-departures__next-label">
                   次の出発
                 </p>
@@ -98,6 +66,37 @@
                     <%= next_departure.note %>
                   </p>
                 <% end %>
+
+              <% elsif route_departure[:next_service_departure].present? %>
+                <% next_service_date = route_departure[:next_service_date] %>
+                <% next_service_departure = route_departure[:next_service_departure] %>
+
+                <p class="next-departures__next-label">
+                  次の運行
+                </p>
+
+                <p class="next-departures__status">
+                  <%= format_service_date(next_service_date) %>
+                </p>
+
+                <p class="next-departures__time">
+                  <%= next_service_departure.departure_time.strftime("%H:%M") %>
+                </p>
+
+                <% if next_service_departure.note.present? %>
+                  <p class="next-departures__note">
+                    <%= next_service_departure.note %>
+                  </p>
+                <% end %>
+
+                <%= link_to "時刻表を確認する",
+                            usual_route_timetables_path(usual_route),
+                            class: "next-departures__link" %>
+
+              <% else %>
+                <p class="next-departures__status">
+                  利用できる便が登録されていません
+                </p>
 
                 <%= link_to "時刻表を確認する",
                             usual_route_timetables_path(usual_route),

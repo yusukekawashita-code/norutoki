@@ -51,9 +51,9 @@
           <div class="top-next-departures__list">
             <% @route_departures.each do |route_departure| %>
               <% usual_route = route_departure[:usual_route] %>
-              <% timetable = route_departure[:timetable] %>
               <% next_departure = route_departure[:next_departure] %>
-              <% tomorrow_departure = route_departure[:tomorrow_departure] %>
+              <% next_service_date = route_departure[:next_service_date] %>
+              <% next_service_departure = route_departure[:next_service_departure] %>
               <% minutes_until_departure = route_departure[:minutes_until_departure] %>
 
               <article class="top-next-departures__card">
@@ -76,7 +76,7 @@
                 </div>
 
                 <div class="top-next-departures__result">
-                  <% if timetable.nil? %>
+                  <% if !route_departure[:timetable_registered] %>
                     <p class="top-next-departures__status">
                       時刻表が登録されていません
                     </p>
@@ -94,13 +94,17 @@
                       <%= format_minutes_until_departure(minutes_until_departure) %>
                     </p>
 
-                  <% elsif tomorrow_departure.present? %>
+                  <% elsif next_service_departure.present? %>
                     <p class="top-next-departures__next-label">
-                      明日の最初の便
+                      次の運行
+                    </p>
+
+                    <p class="top-next-departures__status">
+                      <%= format_service_date(next_service_date) %>
                     </p>
 
                     <p class="top-next-departures__time">
-                      <%= tomorrow_departure.departure_time.strftime("%H:%M") %>
+                      <%= next_service_departure.departure_time.strftime("%H:%M") %>
                     </p>
 
                   <% else %>

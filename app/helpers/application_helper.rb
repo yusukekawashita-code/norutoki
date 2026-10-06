@@ -12,4 +12,11 @@ module ApplicationHelper
       "あと#{remaining_minutes}分"
     end
   end
+
+  def format_service_date(date)
+    return if date.nil?
+
+    weekdays = %w[日 月 火 水 木 金 土]
+    "#{date.month}月#{date.day}日（#{weekdays[date.wday]}）"
+  end
 end

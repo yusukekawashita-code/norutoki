@@ -145,6 +145,12 @@ class TimetableTest < ActiveSupport::TestCase
     assert_equal 2, Timetable.today_day_type(date)
   end
 
+  test "祝日はday_type 2を返す" do
+    date = Date.new(2026, 10, 12) # スポーツの日（月曜日）
+
+    assert_equal 2, Timetable.today_day_type(date)
+  end
+
   test "登録順に関係なく最初の便を取得できる" do
     timetable = timetables(:one)
     timetable.departures.destroy_all

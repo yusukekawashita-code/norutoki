@@ -113,7 +113,8 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
       get root_url
 
       assert_response :success
-      assert_select ".top-next-departures__next-label", text: "明日の最初の便"
+      assert_select ".top-next-departures__next-label", text: "次の運行"
+      assert_select ".top-next-departures__status", text: "9月26日（土）"
       assert_select ".top-next-departures__time", text: "07:00"
       assert_select ".top-next-departures__countdown", count: 0
     end

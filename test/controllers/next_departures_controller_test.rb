@@ -70,8 +70,8 @@ class NextDeparturesControllerTest < ActionDispatch::IntegrationTest
       get next_departures_path
 
       assert_response :success
-      assert_select ".next-departures__status", text: "本日の便は終了しました"
-      assert_select ".next-departures__next-label", text: "明日の最初の便"
+      assert_select ".next-departures__next-label", text: "次の運行"
+      assert_select ".next-departures__status", text: "9月27日（日）"
       assert_select ".next-departures__time", text: "07:30"
       assert_select ".next-departures__note", text: "日曜始発"
       assert_select ".next-departures__countdown", count: 0
@@ -249,8 +249,8 @@ class NextDeparturesControllerTest < ActionDispatch::IntegrationTest
       get next_departures_path
 
       assert_response :success
-      assert_select ".next-departures__status", text: "本日の便は終了しました"
-      assert_select ".next-departures__next-label", text: "明日の最初の便"
+      assert_select ".next-departures__next-label", text: "次の運行"
+      assert_select ".next-departures__status", text: "9月26日（土）"
       assert_select ".next-departures__time", text: "07:00"
       assert_select ".next-departures__note", text: "土曜始発"
       assert_select ".next-departures__countdown", count: 0
@@ -289,9 +289,9 @@ class NextDeparturesControllerTest < ActionDispatch::IntegrationTest
       get next_departures_path
 
       assert_response :success
-      assert_select ".next-departures__status", text: "本日の便は終了しました"
-      assert_select ".next-departures__status", text: "明日の便は登録されていません"
-      assert_select ".next-departures__time", count: 0
+      assert_select ".next-departures__next-label", text: "次の運行"
+      assert_select ".next-departures__status", text: "9月28日（月）"
+      assert_select ".next-departures__time", text: "08:10"
     end
   end
 

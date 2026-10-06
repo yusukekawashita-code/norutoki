@@ -732,10 +732,10 @@ class UsualRoutesControllerTest < ActionDispatch::IntegrationTest
       get usual_route_path(usual_route)
 
       assert_response :success
-      assert_select ".usual-route-detail__next-status",
-                    text: "本日の便は終了しました"
       assert_select ".usual-route-detail__next-caption",
-                    text: "明日の最初の便"
+                    text: "次の運行"
+      assert_select ".usual-route-detail__next-status",
+                    text: "9月26日（土）"
       assert_select ".usual-route-detail__next-time", text: "07:00"
       assert_select ".usual-route-detail__next-note", text: "土曜始発"
       assert_select ".usual-route-detail__next-countdown", count: 0
@@ -764,11 +764,11 @@ class UsualRoutesControllerTest < ActionDispatch::IntegrationTest
       get usual_route_path(usual_route)
 
       assert_response :success
+      assert_select ".usual-route-detail__next-caption",
+                    text: "次の運行"
       assert_select ".usual-route-detail__next-status",
-                    text: "本日の便は終了しました"
-      assert_select ".usual-route-detail__next-status",
-                    text: "明日の便は登録されていません"
-      assert_select ".usual-route-detail__next-time", count: 0
+                    text: "9月28日（月）"
+      assert_select ".usual-route-detail__next-time", text: "08:10"
     end
   end
 
