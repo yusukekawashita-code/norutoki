@@ -40,3 +40,43 @@ document.addEventListener("turbo:load", () => {
     departuresContainer.insertAdjacentHTML("beforeend", html);
   });
 });
+
+document.addEventListener("click", (event) => {
+  const routeCard = event.target.closest("[data-route-card]");
+
+  if (!routeCard) {
+    return;
+  }
+
+  // カード内のリンク・ボタン・フォームを操作した場合は、
+  // カード全体のページ遷移を発生させない
+  if (event.target.closest("a, button, form")) {
+    return;
+  }
+
+  const routeUrl = routeCard.dataset.routeUrl;
+
+  if (routeUrl) {
+    Turbo.visit(routeUrl);
+  }
+});
+
+document.addEventListener("keydown", (event) => {
+  const routeCard = event.target.closest("[data-route-card]");
+
+  if (!routeCard || event.target !== routeCard) {
+    return;
+  }
+
+  if (event.key !== "Enter" && event.key !== " ") {
+    return;
+  }
+
+  event.preventDefault();
+
+  const routeUrl = routeCard.dataset.routeUrl;
+
+  if (routeUrl) {
+    Turbo.visit(routeUrl);
+  }
+});

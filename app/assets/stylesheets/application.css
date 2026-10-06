@@ -2708,3 +2708,13 @@ a:focus-visible, button:focus-visible, input[type="submit"]:focus-visible { outl
   *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
   a[class]:hover, button:hover, input[type="submit"]:hover, .usual-routes__card:hover { transform: none; }
 }
+
+/* Clickable route card */
+.usual-routes__card[data-route-card] {
+  cursor: pointer;
+}
+
+.usual-routes__card[data-route-card]:focus-visible {
+  outline: 3px solid var(--color-primary-dark);
+  outline-offset: 4px;
+}

@@ -59,6 +59,8 @@ class TimetablesControllerTest < ActionDispatch::IntegrationTest
       password: "password"
     }
 
+    @usual_route.timetables.destroy_all
+
     [
       Timetable::DAY_TYPES[:weekday],
       Timetable::DAY_TYPES[:saturday],

@@ -26,7 +26,12 @@
     <% if @usual_routes.any? %>
       <div class="usual-routes__list">
         <% @usual_routes.each_with_index do |usual_route, index| %>
-          <div class="usual-routes__card">
+          <div class="usual-routes__card"
+            data-route-card
+            data-route-url="<%= usual_route_path(usual_route) %>"
+            tabindex="0"
+            role="link"
+            aria-label="<%= "#{usual_route.name}の詳細を見る" %>">
             <div class="usual-routes__card-content">
               <h2 class="usual-routes__name">
                 <%= link_to usual_route.name, usual_route_path(usual_route), class: "usual-routes__name-link" %>
@@ -51,24 +56,24 @@
               </div>
             </div>
 
-          <div class="usual-routes__order">
-              <% if index.positive? %>
-                <%= button_to "↑",
-                              move_up_usual_route_path(usual_route),
-                              method: :patch,
-                              class: "usual-routes__order-button",
-                              aria: { label: "#{usual_route.name}を上へ移動" } %>
-              <% end %>
+            <div class="usual-routes__order">
+                <% if index.positive? %>
+                  <%= button_to "↑",
+                                move_up_usual_route_path(usual_route),
+                                method: :patch,
+                                class: "usual-routes__order-button",
+                                aria: { label: "#{usual_route.name}を上へ移動" } %>
+                <% end %>
 
-              <% if index < @usual_routes.size - 1 %>
-                <%= button_to "↓",
-                              move_down_usual_route_path(usual_route),
-                              method: :patch,
-                              class: "usual-routes__order-button",
-                              aria: { label: "#{usual_route.name}を下へ移動" } %>
-              <% end %>
+                <% if index < @usual_routes.size - 1 %>
+                  <%= button_to "↓",
+                                move_down_usual_route_path(usual_route),
+                                method: :patch,
+                                class: "usual-routes__order-button",
+                                aria: { label: "#{usual_route.name}を下へ移動" } %>
+                <% end %>
+              </div>
             </div>
-          </div>
         <% end %>
       </div>
     <% else %>

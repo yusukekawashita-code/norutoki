@@ -4,7 +4,7 @@ class TimetableTest < ActiveSupport::TestCase
   test "usual_routeとday_typeがあれば有効" do
     timetable = Timetable.new(
       usual_route: usual_routes(:one),
-      day_type: 1
+      day_type: 0
     )
 
     assert timetable.valid?

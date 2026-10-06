@@ -42,7 +42,8 @@
       <% if @usual_routes.any? %>
         <div class="my-page__route-list">
           <% @usual_routes.each do |usual_route| %>
-            <div class="my-page__route-item">
+            <%= link_to usual_route_path(usual_route),
+                        class: "my-page__route-item" do %>
               <p class="my-page__route-name">
                 <%= usual_route.name %>
               </p>
@@ -52,7 +53,7 @@
                 →
                 <%= usual_route.destination_place %>
               </p>
-            </div>
+            <% end %>
           <% end %>
         </div>
       <% else %>
