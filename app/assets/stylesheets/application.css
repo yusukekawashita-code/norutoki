@@ -2718,3 +2718,25 @@ a:focus-visible, button:focus-visible, input[type="submit"]:focus-visible { outl
   outline: 3px solid var(--color-primary-dark);
   outline-offset: 4px;
 }
+
+/* Prevent iOS Safari time input overflow */
+@media (max-width: 767px) {
+  .timetable-form__departure {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .timetable-form__departure > * {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  input.timetable-form__time {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+}
